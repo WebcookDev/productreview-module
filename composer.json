@@ -1,5 +1,5 @@
 {
-    "name": "webcms2/product-review-module",
+    "name": "webcms2/productreview-module",
     "type": "library",
     "description": "Module for adding products and its reviews, with options to download and find reviews on google maps.",
     "keywords": ["webcms2","module"],
