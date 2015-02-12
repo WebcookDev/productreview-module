@@ -13,7 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity()
  * @ORM\Table(name="productreview_photoreview")
  */
-class PhotoReview extends \WebCMS\Entity\Entity
+class Photoreview extends \WebCMS\Entity\Entity
 {
 	/**
 	 * @ORM\Column(type="string", length=255)
