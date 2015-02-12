@@ -5,14 +5,14 @@
  * Copyright (c) @see LICENSE
  */
 
-namespace WebCMS\ProductReviewModule;
+namespace WebCMS\ProductreviewModule;
 
 /**
  * Description of Product Review
  *
  * @author Jakub Sanda <jakub.sanda@webcook.cz>
  */
-class ProductReview extends \WebCMS\Module
+class Productreview extends \WebCMS\Module
 {
 	/**
 	 * [$name description]

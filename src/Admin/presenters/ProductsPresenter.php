@@ -5,10 +5,10 @@
  * Copyright (c) @see LICENSE
  */
 
-namespace AdminModule\ProductReviewModule;
+namespace AdminModule\ProductreviewModule;
 
 use Nette\Forms\Form;
-use WebCMS\ProductReviewModule\Entity\Product;
+use WebCMS\ProductreviewModule\Entity\Product;
 
 /**
  * Main controller
@@ -42,7 +42,7 @@ class ProductsPresenter extends BasePresenter
 
     protected function createComponentGrid($name)
     {
-        $grid = $this->createGrid($this, $name, "\WebCMS\ProductReviewModule\Entity\Product");
+        $grid = $this->createGrid($this, $name, "\WebCMS\ProductreviewModule\Entity\Product");
 
         $grid->addColumnText('name', 'Name')->setSortable();
 
