@@ -5,7 +5,7 @@
  * Copyright (c) @see LICENSE
  */
 
-namespace FrontendModule\ProductReviewModule;
+namespace FrontendModule\ProductreviewModule;
 
 /**
  * Description of BasePresenter
