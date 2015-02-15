@@ -33,6 +33,16 @@ class Review extends \WebCMS\Entity\Entity
     private $text;
 
     /**
+     * @orm\Column(type="text")
+     */
+    private $clientText;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $clientEmail;
+
+    /**
      * @orm\Column(type="date")
      */
     private $date;
@@ -68,12 +78,18 @@ class Review extends \WebCMS\Entity\Entity
      */
     private $main;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $visitable;
+
 
     public function __construct()
     {
         $this->hide = false;
         $this->homepage = false;
         $this->main = false;
+        $this->visitable = false;
     }
 
 
@@ -119,6 +135,28 @@ class Review extends \WebCMS\Entity\Entity
     public function setText($text)
     {
         $this->text = $text;
+        return $this;
+    }
+
+    public function getClientText()
+    {
+        return $this->clientText;
+    }
+    
+    public function setClientText($clientText)
+    {
+        $this->clientText = $clientText;
+        return $this;
+    }
+
+    public function getClientEmail()
+    {
+        return $this->clientEmail;
+    }
+    
+    public function setClientEmail($clientEmail)
+    {
+        $this->clientEmail = $clientEmail;
         return $this;
     }
 
@@ -203,6 +241,17 @@ class Review extends \WebCMS\Entity\Entity
     public function setMain($main)
     {
         $this->main = $main;
+        return $this;
+    }
+
+    public function getVisitable()
+    {
+        return $this->visitable;
+    }
+    
+    public function setVisitable($visitable)
+    {
+        $this->visitable = $visitable;
         return $this;
     }
 }
