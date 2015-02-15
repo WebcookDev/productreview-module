@@ -47,6 +47,18 @@ class Product extends \WebCMS\Entity\Entity
      */
     private $hide;
 
+    /**
+     * @orm\OneToMany(targetEntity="Photoreview", mappedBy="product") 
+     * @var Array
+     */
+    private $photos;
+
+    /**
+     * @orm\OneToMany(targetEntity="Review", mappedBy="product") 
+     * @var Array
+     */
+    private $reviews;
+
 
     public function __construct()
     {
@@ -111,6 +123,44 @@ class Product extends \WebCMS\Entity\Entity
         return $this;
     }
 
+    public function getPhotos() {
+        return $this->photos;
+    }
+
+    public function setPhotos(Array $photos) {
+        $this->photos = $photos;
+    }
+    
+    public function getDefaultPhoto(){
+        foreach($this->getPhotos() as $photo){
+            if($photo->getMain()){
+                return $photo;
+            }
+        }
+        
+        return NULL;
+    }
+
+    public function getReviews()
+    {
+        return $this->reviews;
+    }
+    
+    public function setReviews($reviews)
+    {
+        $this->reviews = $reviews;
+        return $this;
+    }
+
+    public function getDefaultReview(){
+        foreach($this->reviews() as $review){
+            if($review->getMain()){
+                return $review;
+            }
+        }
+        
+        return NULL;
+    }
 
     public function getHide()
     {

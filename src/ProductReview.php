@@ -18,7 +18,7 @@ class Productreview extends \WebCMS\Module
 	 * [$name description]
 	 * @var string
 	 */
-    protected $name = 'ProductReview';
+    protected $name = 'Productreview';
     
     /**
      * [$author description]

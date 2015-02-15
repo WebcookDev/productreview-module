@@ -43,7 +43,7 @@ class Review extends \WebCMS\Entity\Entity
     private $price;
 
     /**
-     * @orm\OneToMany(targetEntity="PhotoReview", mappedBy="review") 
+     * @orm\OneToMany(targetEntity="Photoreview", mappedBy="review") 
      * @var Array
      */
     private $photos;
@@ -63,11 +63,17 @@ class Review extends \WebCMS\Entity\Entity
      */
     private $hide;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $main;
+
 
     public function __construct()
     {
         $this->hide = false;
         $this->homepage = false;
+        $this->main = false;
     }
 
 
@@ -186,6 +192,17 @@ class Review extends \WebCMS\Entity\Entity
     public function setHomepage($homepage)
     {
         $this->homepage = $homepage;
+        return $this;
+    }
+
+    public function getMain()
+    {
+        return $this->main;
+    }
+    
+    public function setMain($main)
+    {
+        $this->main = $main;
         return $this;
     }
 }
