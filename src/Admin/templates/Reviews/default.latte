@@ -1,0 +1,13 @@
+{block content}
+	
+	<div class="page-heading">	
+		{include ../tabs.latte active => 'reviews'}
+	</div>
+
+	<br />
+	<a class="btn btn-primary" n:href="update idPage => $idPage">{_'Add review'}</a>
+	<br /><br />
+
+	{control grid}
+
+{/block}
