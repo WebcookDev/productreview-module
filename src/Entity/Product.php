@@ -48,7 +48,7 @@ class Product extends \WebCMS\Entity\Entity
     private $hide;
 
     /**
-     * @orm\OneToMany(targetEntity="Photoreview", mappedBy="product") 
+     * @orm\OneToMany(targetEntity="Photo", mappedBy="product") 
      * @var Array
      */
     private $photos;

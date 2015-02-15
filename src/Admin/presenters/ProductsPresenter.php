@@ -19,9 +19,13 @@ class ProductsPresenter extends BasePresenter
 {
     private $product;
 
+    private $repository;
+
     protected function startup()
     {
     	parent::startup();
+
+        $this->repository = $this->em->getRepository('WebCMS\ProductreviewModule\Entity\Product');
     }
 
     protected function beforeRender()
@@ -31,7 +35,7 @@ class ProductsPresenter extends BasePresenter
 
     public function actionDefault($idPage)
     {
-
+       
     }
 
     public function renderDefault($idPage)
@@ -59,9 +63,12 @@ class ProductsPresenter extends BasePresenter
 
     public function actionUpdate($id, $idPage)
     {
-        $this->reloadContent();
-
         $this->product = $id ? $this->repository->find($id) : "";
+    }
+
+    public function renderUpdate($idPage)
+    {
+        $this->reloadContent();
 
         $this->template->idPage = $idPage;
         $this->template->product = $this->product;
@@ -93,6 +100,82 @@ class ProductsPresenter extends BasePresenter
                 'idPage' => $this->actualPage->getId()
             ));
         }
+    }
+
+    protected function createComponentProductForm()
+    {
+        $form = $this->createForm();
+
+        $form->addText('name', 'Name')->setRequired();
+        $form->addTextArea('text', 'Text')->setAttribute('class', 'form-control editor');
+        $form->addTextArea('specification', 'Specification')->setAttribute('class', 'form-control editor');
+
+        $form->addCheckbox('hide', 'Hide');
+
+        $form->addSubmit('submit', 'Save')->setAttribute('class', 'btn btn-success');
+        $form->onSuccess[] = callback($this, 'productFormSubmitted');
+ 
+        if (is_object($this->product)) {
+            $form->setDefaults($this->product->toArray());
+        }
+        
+        return $form;
+    }
+
+    public function productFormSubmitted($form)
+    {
+        $values = $form->getValues();
+
+        if (!is_object($this->product)) {
+            $this->product = new Product;
+            $this->em->persist($this->product);
+        } else {
+            // delete old photos and save new ones
+            $qb = $this->em->createQueryBuilder();
+            $qb->delete('WebCMS\ProductreviewModule\Entity\Photo', 'l')
+                    ->where('l.product = ?1')
+                    ->setParameter(1, $this->product)
+                    ->getQuery()
+                    ->execute();
+        }
+        
+        foreach ($values as $key => $value) {
+            $setter = 'set' . ucfirst($key);
+            $this->product->$setter($value);
+        }
+
+        if (array_key_exists('files', $_POST)) {
+            $counter = 0;
+            if(array_key_exists('fileDefault', $_POST)) $default = intval($_POST['fileDefault'][0]) - 1;
+            else $default = -1;
+            
+            foreach($_POST['files'] as $path){
+
+                $photo = new \WebCMS\ProductreviewModule\Entity\Photo;
+                $photo->setName($_POST['fileNames'][$counter]);
+                
+                if($default === $counter){
+                    $photo->setMain(TRUE);
+                }else{
+                    $photo->setMain(FALSE);
+                }
+                
+                $photo->setPath($path);
+                $photo->setProduct($this->product);
+                $photo->setCreated(new \DateTime);
+
+                $this->em->persist($photo);
+
+                $counter++;
+            }
+        }
+
+        $this->em->flush();
+        $this->flashMessage('Product has been added/updated.', 'success');
+        
+        $this->forward('default', array(
+            'idPage' => $this->actualPage->getId()
+        ));
     }
 
 }
