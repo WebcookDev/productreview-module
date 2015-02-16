@@ -53,6 +53,16 @@ class Review extends \WebCMS\Entity\Entity
     private $price;
 
     /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $latitude;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $longitude;
+
+    /**
      * @orm\OneToMany(targetEntity="Photoreview", mappedBy="review") 
      * @var Array
      */
@@ -82,6 +92,7 @@ class Review extends \WebCMS\Entity\Entity
      * @ORM\Column(type="boolean")
      */
     private $visitable;
+
 
 
     public function __construct()
@@ -252,6 +263,28 @@ class Review extends \WebCMS\Entity\Entity
     public function setVisitable($visitable)
     {
         $this->visitable = $visitable;
+        return $this;
+    }
+
+    public function getLatitude()
+    {
+        return $this->latitude;
+    }
+    
+    public function setLatitude($latitude)
+    {
+        $this->latitude = $latitude;
+        return $this;
+    }
+
+    public function getLongtitude()
+    {
+        return $this->longtitude;
+    }
+    
+    public function setLongtitude($longtitude)
+    {
+        $this->longtitude = $longtitude;
         return $this;
     }
 }

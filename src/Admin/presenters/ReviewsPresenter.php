@@ -24,11 +24,11 @@ class ReviewsPresenter extends BasePresenter
 
     private $repository;
 
-    private $productRepository
+    private $productRepository;
 
     protected function startup()
     {
-    	parent::startup();
+        parent::startup();
 
         $this->repository = $this->em->getRepository('WebCMS\ProductreviewModule\Entity\Review');
         $this->productRepository = $this->em->getRepository('WebCMS\ProductreviewModule\Entity\Product');
@@ -36,7 +36,7 @@ class ReviewsPresenter extends BasePresenter
 
     protected function beforeRender()
     {
-	   parent::beforeRender();
+       parent::beforeRender();
     }
 
     public function actionDefault($idPage)
@@ -55,6 +55,12 @@ class ReviewsPresenter extends BasePresenter
         $grid = $this->createGrid($this, $name, "\WebCMS\ProductreviewModule\Entity\Review");
 
         $grid->addColumnText('name', 'Name')->setSortable();
+
+        $grid->addColumnDate('date', 'Date')->setSortable();
+
+        $grid->addColumnText('product', 'Product')->setCustomRender(function($item) {
+            return $item->getProduct()->getName();
+        })->setSortable();
 
         $grid->addColumnText('homepage', 'Added To homepage')->setCustomRender(function($item) {
             return $item->getHomepage() ? 'yes' : 'no';
@@ -112,10 +118,29 @@ class ReviewsPresenter extends BasePresenter
     {
         $form = $this->createForm();
 
+        $products = $this->em->getRepository('\WebCMS\ProductreviewModule\Entity\Product')->findAll();
+        $productsForSelect = array();
+        if ($products) {
+            foreach ($products as $product) {
+                $productsForSelect[$product->getId()] = $product->getName();
+            }
+        }
+
         $form->addText('name', 'Name')->setRequired();
+        $form->addSelect('product', 'Product')->setItems($productsForSelect)->setRequired();
+        $form->addText('date', 'Date')->setAttribute('class', array('datepicker'))->setRequired('Fill in date of this review.');
+        $form->addText('price', 'Price')->setRequired();
         $form->addTextArea('text', 'Text')->setAttribute('class', 'form-control editor');
 
+        $form->addCheckbox('visitable', 'Visitable');
+        $form->addTextArea('clientText', 'Client text')->setAttribute('class', 'form-control editor');
+        $form->addText('clientEmail', 'Client email');
+
+        $form->addText('latitude', 'Latitude');
+        $form->addText('longitude', 'Longitude');
+
         $form->addCheckbox('hide', 'Hide');
+        $form->addCheckbox('main', 'Main');
 
         $form->addSubmit('submit', 'Save')->setAttribute('class', 'btn btn-success');
         $form->onSuccess[] = callback($this, 'reviewFormSubmitted');
@@ -137,7 +162,7 @@ class ReviewsPresenter extends BasePresenter
         } else {
             // delete old photos and save new ones
             $qb = $this->em->createQueryBuilder();
-            $qb->delete('WebCMS\ProductreviewModule\Entity\Review', 'l')
+            $qb->delete('WebCMS\ProductreviewModule\Entity\Photoreview', 'l')
                     ->where('l.review = ?1')
                     ->setParameter(1, $this->review)
                     ->getQuery()
@@ -145,6 +170,13 @@ class ReviewsPresenter extends BasePresenter
         }
         
         foreach ($values as $key => $value) {
+            if ($key == "date") {
+                $value = new \Nette\DateTime($value);
+            }
+            if ($key == "product") {
+                $key = "product";
+                $value = $this->productRepository->find($values->product);
+            }
             $setter = 'set' . ucfirst($key);
             $this->review->$setter($value);
         }
@@ -156,7 +188,7 @@ class ReviewsPresenter extends BasePresenter
             
             foreach($_POST['files'] as $path){
 
-                $photo = new \WebCMS\ProductreviewModule\Entity\Review;
+                $photo = new \WebCMS\ProductreviewModule\Entity\Photoreview;
                 $photo->setName($_POST['fileNames'][$counter]);
                 
                 if($default === $counter){

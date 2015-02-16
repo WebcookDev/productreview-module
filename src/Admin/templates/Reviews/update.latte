@@ -1,0 +1,94 @@
+{block content}
+	
+	<div class="page-heading">	
+		<h1>{$actualPage->getTitle()}</h1>
+		{include ../tabs.latte active => 'reviews'}
+	</div>
+
+	{form reviewForm}
+		
+		<div class="control-group">
+			{label name class => 'control-label' /}
+			{input name class => 'form-control'}
+		</div>
+		<div class="control-group">
+			{label product class => 'control-label' /}
+			{input product class => 'form-control'}
+		</div>
+		<div class="control-group">
+			{label date class => 'control-label' /}
+			{input date class => 'form-control datepicker'}
+		</div>
+		<div class="control-group">
+			{label price class => 'control-label' /}
+			{input price class => 'form-control'}
+		</div>
+		<div class="control-group">
+			{label text class => 'control-label' /}
+			{input text class => 'form-control editor'}
+		</div>
+
+		<div class="control-group">
+			{label visitable class => 'control-label' /}
+			{input visitable class => ''}
+		</div>
+
+		<div class="control-group">
+			{label clientEmail class => 'control-label' /}
+			{input clientEmail class => 'form-control'}
+		</div>
+
+		<div class="control-group">
+			{label clientText class => 'control-label' /}
+			{input clientText class => 'form-control editor'}
+		</div>
+
+		<div class="control-group">
+			{label latitude class => 'control-label' /}
+			{input latitude class => 'form-control'}
+		</div>
+
+		<div class="control-group">
+			{label longitude class => 'control-label' /}
+			{input longitude class => 'form-control'}
+		</div>
+
+		<div class="control-group">
+			{label hide class => 'control-label' /}
+			{input hide class => ''}
+		</div>
+		<div class="control-group">
+			{label main class => 'control-label' /}
+			{input main class => ''}
+		</div>
+
+		<div class="control-group">
+			<a n:href=":Admin:Filesystem:default dialog => true, multiple => true" data-container="#pictures" class="btn btn-primary ajax filesDialog" data-remote="false" data-target="#myModal" data-toggle="modal">{_'Load files'}</a>
+		</div>
+
+		<br /><br />
+		
+		<div class="well row" id="pictures">
+			{if !empty($review)}
+				{foreach $review->getPhotos() as $photo}
+					<div class="col-md-3 jq_fileBox">
+						<div class="img-thumbnail">
+							<img src="{$basePath}{$photo->getPath()|thumbnail:'system'}" />
+							<input type="hidden" name="files[]" value="{$photo->getPath()}" />
+							<input class="form-control" type="text" name="fileNames[]" value="{$photo->getName()}" />
+							<input class="form-control" type="radio" name="fileDefault[]" value="{$iterator->counter}" {if $photo->getMain()}checked{/if} />
+							<span class="btn btn-default jq_fileDelete">&times</span>
+						</div>
+					</div>
+				{/foreach}
+			{/if}
+		</div>
+
+		<div class="form-actions">
+			{input submit class => 'btn btn-success'}
+		</div>
+
+	{/form}
+
+
+{/block}
