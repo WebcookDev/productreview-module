@@ -62,6 +62,14 @@ class ReviewsPresenter extends BasePresenter
             return $item->getProduct()->getName();
         })->setSortable();
 
+        $grid->addColumnText('main', 'Main')->setCustomRender(function($item) {
+            return $item->getMain() ? 'yes' : 'no';
+        })->setSortable();
+
+        $grid->addColumnText('visitable', 'Visitable')->setCustomRender(function($item) {
+            return $item->getVisitable() ? 'yes' : 'no';
+        })->setSortable();
+
         $grid->addColumnText('homepage', 'Added To homepage')->setCustomRender(function($item) {
             return $item->getHomepage() ? 'yes' : 'no';
         })->setSortable();
