@@ -28,17 +28,17 @@ class Review extends \WebCMS\Entity\Entity
     private $slug;
 
     /**
-     * @orm\Column(type="text")
+     * @orm\Column(type="text", nullable=true)
      */
     private $text;
 
     /**
-     * @orm\Column(type="text")
+     * @orm\Column(type="text", nullable=true)
      */
     private $clientText;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $clientEmail;
 
@@ -48,17 +48,17 @@ class Review extends \WebCMS\Entity\Entity
     private $date;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $price;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $latitude;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $longitude;
 

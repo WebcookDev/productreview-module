@@ -30,6 +30,7 @@ class SettingsPresenter extends BasePresenter
     public function createComponentSettingsForm()
     {
 		$settings = array();
+        $settings[] = $this->settings->get('Show google map?', 'productreviewModule' . $this->actualPage->getId(), 'checkbox', array());
 
 		return $this->createSettingsForm($settings);
     }

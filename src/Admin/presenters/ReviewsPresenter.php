@@ -134,10 +134,12 @@ class ReviewsPresenter extends BasePresenter
 
         $form->addCheckbox('visitable', 'Visitable');
         $form->addTextArea('clientText', 'Client text')->setAttribute('class', 'form-control editor');
-        $form->addText('clientEmail', 'Client email');
+        $form->addText('clientEmail', 'Client email')
+            ->addConditionOn($form['visitable'], Form::EQUAL, TRUE)
+            ->addRule(Form::FILLED, 'Fill in clients email.');
 
         $form->addText('latitude', 'Latitude');
-        $form->addText('longitude', 'Longitude');
+        $form->addText('longtitude', 'Longitude');
 
         $form->addCheckbox('hide', 'Hide');
         $form->addCheckbox('main', 'Main');
