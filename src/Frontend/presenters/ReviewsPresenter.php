@@ -27,6 +27,12 @@ class ReviewsPresenter extends BasePresenter
 
     private $reviews;
 
+    private $markers = array();
+
+    private $visitableMarkers = array();
+
+    private $product;
+
     private $products;
     
     protected function startup() 
@@ -45,29 +51,38 @@ class ReviewsPresenter extends BasePresenter
     public function actionDefault($id)
     {
         $this->reviews = $this->repository->findAll();
+        $this->products = $this->productRepository->findAll();
+
+        foreach ($this->reviews as $review) {
+            dump($review);
+        }
+
+        dump($this->markers);
 
         $parameters = $this->getParameter();
 
         if (count($parameters['parameters']) > 0) {
             $slug = $parameters['parameters'][0];
-            $product = $this->productRepository->findOneBy(array(
+            $this->product = $this->productRepository->findOneBy(array(
                 'slug' => $slug
             ));
             $this->reviews = $this->repository->findBy(array(
-                'product' => $product
+                'product' => $this->product
             ));
         }
     }
 
     public function renderDefault($id)
     {   
-        // if ($this->reviews) {
-        //     $this->template->reviews = $this->reviews;
-        //     $this->template->setFile(APP_DIR . '/templates/productreview-module/Reviews/detail.latte');
-        // }
+        if ($this->product) {
+            $this->template->list = array();
+            $this->template->product = $this->product;
+            $this->template->setFile(APP_DIR . '/templates/productreview-module/Reviews/detail.latte');
+        }
 
         $this->template->id = $id;
         $this->template->reviews = $this->reviews;
+        $this->template->products = $this->products;
     }
 
 
