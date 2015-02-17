@@ -102,6 +102,11 @@ class ProductsPresenter extends BasePresenter
         }
     }
 
+    protected function createComponentAccessoriesGrid($name)
+    {
+        
+    }
+
     protected function createComponentProductForm()
     {
         $form = $this->createForm();

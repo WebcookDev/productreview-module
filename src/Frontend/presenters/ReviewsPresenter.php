@@ -54,10 +54,10 @@ class ReviewsPresenter extends BasePresenter
         $this->products = $this->productRepository->findAll();
 
         foreach ($this->reviews as $review) {
-            dump($review);
+            if ($review->getLatitude() && $review->getLongtitude()) {
+                $this->markers[] = array('latitude' => $review->getLatitude(), 'longtitude' => $review->getLongtitude());
+            }
         }
-
-        dump($this->markers);
 
         $parameters = $this->getParameter();
 
@@ -81,6 +81,7 @@ class ReviewsPresenter extends BasePresenter
         }
 
         $this->template->id = $id;
+        $this->template->markers = $this->markers;
         $this->template->reviews = $this->reviews;
         $this->template->products = $this->products;
     }

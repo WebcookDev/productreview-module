@@ -4,10 +4,10 @@
 		{include ../tabs.latte active => 'reviews'}
 	</div>
 
-	<br />
-	<a class="btn btn-primary" n:href="update idPage => $idPage">{_'Add review'}</a>
-	<br /><br />
-
-	{control grid}
+	<div class="row control-group">
+		<h2>{_'Reviews'}</h2>
+		<a class="btn btn-primary" n:href="update idPage => $idPage">{_'Add review'}</a>
+		{control grid}
+	</div>
 
 {/block}

@@ -4,10 +4,18 @@
 		{include ../tabs.latte active => 'products'}
 	</div>
 
-	<br />
-	<a class="btn btn-primary" n:href="update idPage => $idPage">{_'Add product'}</a>
-	<br /><br />
 
-	{control grid}
+	<div class="row control-group">
+		<h2>{_'Products'}</h2>
+		<a class="btn btn-primary" n:href="update idPage => $idPage">{_'Add product'}</a>
+		{control grid}
+	</div>
+
+	<div class="row control-group">
+		<h2>{_'Accessories'}</h2>
+		<a class="btn btn-primary" n:href="updateCategory idPage => $idPage">{_'Add category'}</a>
+		<a class="btn btn-primary" n:href="updateAccessory idPage => $idPage">{_'Add accessory'}</a>
+		
+	</div>
 
 {/block}
