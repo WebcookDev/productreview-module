@@ -9,6 +9,8 @@ namespace AdminModule\ProductreviewModule;
 
 use Nette\Forms\Form;
 use WebCMS\ProductreviewModule\Entity\Product;
+use WebCMS\ProductreviewModule\Entity\Accessoriescategory;
+use WebCMS\ProductreviewModule\Entity\Accessory;
 
 /**
  * Main controller
@@ -21,11 +23,21 @@ class ProductsPresenter extends BasePresenter
 
     private $repository;
 
+    private $accesory;
+
+    private $accessoriescategory;
+
+    private $accesoryRepository;
+
+    private $accessoriescategoryRepository;
+
     protected function startup()
     {
     	parent::startup();
 
         $this->repository = $this->em->getRepository('WebCMS\ProductreviewModule\Entity\Product');
+        $this->accessoriescategoryRepository = $this->em->getRepository('WebCMS\ProductreviewModule\Entity\Accessoriescategory');
+        $this->accesoryRepository = $this->em->getRepository('WebCMS\ProductreviewModule\Entity\Accessory');
     }
 
     protected function beforeRender()
@@ -102,9 +114,29 @@ class ProductsPresenter extends BasePresenter
         }
     }
 
-    protected function createComponentAccessoriesGrid($name)
+    protected function createComponentAccessoriesCategoryGrid($name)
     {
-        
+        $grid = $this->createGrid($this, $name, "\WebCMS\ProductreviewModule\Entity\Accessoriescategory");
+
+        $grid->addColumnText('name', 'Name')->setSortable();
+
+        $grid->addActionHref("updateCategory", 'Edit', 'update', array('idPage' => $this->actualPage->getId()))->getElementPrototype()->addAttributes(array('class' => array('btn', 'btn-primary', 'ajax')));
+        $grid->addActionHref("deleteCategory", 'Delete', 'delete', array('idPage' => $this->actualPage->getId()))->getElementPrototype()->addAttributes(array('class' => array('btn', 'btn-danger') , 'data-confirm' => 'Are you sure you want to delete this item?'));
+
+        return $grid;
+    }
+
+    public function actionUpdateCategory($id, $idPage)
+    {
+        $this->accessoriescategory = $id ? $this->accessoriescategoryRepository->find($id) : "";
+    }
+
+    public function renderUpdateCategory($idPage)
+    {
+        $this->reloadContent();
+
+        $this->template->idPage = $idPage;
+        $this->template->accessoriescategory = $this->accessoriescategory;
     }
 
     protected function createComponentProductForm()
@@ -177,6 +209,44 @@ class ProductsPresenter extends BasePresenter
 
         $this->em->flush();
         $this->flashMessage('Product has been added/updated.', 'success');
+        
+        $this->forward('default', array(
+            'idPage' => $this->actualPage->getId()
+        ));
+    }
+
+    protected function createComponentCategoryForm()
+    {
+        $form = $this->createForm();
+
+        $form->addText('name', 'Name')->setRequired();
+
+        $form->addSubmit('submit', 'Save')->setAttribute('class', 'btn btn-success');
+        $form->onSuccess[] = callback($this, 'categoryFormSubmitted');
+ 
+        if (is_object($this->accessoriescategory)) {
+            $form->setDefaults($this->accessoriescategory->toArray());
+        }
+        
+        return $form;
+    }
+
+    public function categoryFormSubmitted($form)
+    {
+        $values = $form->getValues();
+
+        if (!is_object($this->product)) {
+            $this->accessoriescategory = new Accessoriescategory;
+            $this->em->persist($this->accessoriescategory);
+        }
+        
+        foreach ($values as $key => $value) {
+            $setter = 'set' . ucfirst($key);
+            $this->accessoriescategory->$setter($value);
+        }
+
+        $this->em->flush();
+        $this->flashMessage('Accessories category has been added/updated.', 'success');
         
         $this->forward('default', array(
             'idPage' => $this->actualPage->getId()

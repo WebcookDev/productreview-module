@@ -21,11 +21,6 @@ class Accessoriescategory extends \WebCMS\Entity\Entity
 	private $name;
 
     /**
-     * @ORM\Column(type="datetime")
-     */
-    private $created;
-
-    /**
      * @ORM\OneToMany(targetEntity="Accessory", mappedBy="accessoriescategory") 
      * @var Array
      */
@@ -52,30 +47,6 @@ class Accessoriescategory extends \WebCMS\Entity\Entity
     public function setName($name)
     {
         $this->name = $name;
-
-        return $this;
-    }
-
-    /**
-     * Gets the value of created.
-     *
-     * @return mixed
-     */
-    public function getCreated()
-    {
-        return $this->created;
-    }
-
-    /**
-     * Sets the value of created.
-     *
-     * @param mixed $created the created
-     *
-     * @return self
-     */
-    public function setCreated($created)
-    {
-        $this->created = $created;
 
         return $this;
     }
