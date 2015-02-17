@@ -59,6 +59,11 @@ class Product extends \WebCMS\Entity\Entity
      */
     private $reviews;
 
+    /**
+     * @orm\Column(type="text")
+     */
+    private $accessories;
+
 
     public function __construct()
     {
@@ -181,6 +186,17 @@ class Product extends \WebCMS\Entity\Entity
     public function setHomepage($homepage)
     {
         $this->homepage = $homepage;
+        return $this;
+    }
+
+    public function getAccessories()
+    {
+        return $this->accessories;
+    }
+    
+    public function setAccessories($accessories)
+    {
+        $this->accessories = $accessories;
         return $this;
     }
 }

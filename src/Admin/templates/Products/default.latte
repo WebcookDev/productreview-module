@@ -15,7 +15,11 @@
 		<h2>{_'Accessories'}</h2>
 		<a class="btn btn-primary" n:href="updateCategory idPage => $idPage">{_'Add category'}</a>
 		<a class="btn btn-primary" n:href="updateAccessory idPage => $idPage">{_'Add accessory'}</a>
-		
+		{control accessoriesCategoryGrid}
+	</div>
+
+	<div class="row control-group">
+		{control accessoriesGrid}
 	</div>
 
 {/block}

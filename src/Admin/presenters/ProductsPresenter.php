@@ -23,11 +23,11 @@ class ProductsPresenter extends BasePresenter
 
     private $repository;
 
-    private $accesory;
+    private $accessory;
 
     private $accessoriescategory;
 
-    private $accesoryRepository;
+    private $accessoryRepository;
 
     private $accessoriescategoryRepository;
 
@@ -37,7 +37,7 @@ class ProductsPresenter extends BasePresenter
 
         $this->repository = $this->em->getRepository('WebCMS\ProductreviewModule\Entity\Product');
         $this->accessoriescategoryRepository = $this->em->getRepository('WebCMS\ProductreviewModule\Entity\Accessoriescategory');
-        $this->accesoryRepository = $this->em->getRepository('WebCMS\ProductreviewModule\Entity\Accessory');
+        $this->accessoryRepository = $this->em->getRepository('WebCMS\ProductreviewModule\Entity\Accessory');
     }
 
     protected function beforeRender()
@@ -120,8 +120,8 @@ class ProductsPresenter extends BasePresenter
 
         $grid->addColumnText('name', 'Name')->setSortable();
 
-        $grid->addActionHref("updateCategory", 'Edit', 'update', array('idPage' => $this->actualPage->getId()))->getElementPrototype()->addAttributes(array('class' => array('btn', 'btn-primary', 'ajax')));
-        $grid->addActionHref("deleteCategory", 'Delete', 'delete', array('idPage' => $this->actualPage->getId()))->getElementPrototype()->addAttributes(array('class' => array('btn', 'btn-danger') , 'data-confirm' => 'Are you sure you want to delete this item?'));
+        $grid->addActionHref("updateCategory", 'Edit', 'updateCategory', array('idPage' => $this->actualPage->getId()))->getElementPrototype()->addAttributes(array('class' => array('btn', 'btn-primary', 'ajax')));
+        $grid->addActionHref("deleteCategory", 'Delete', 'deleteCategory', array('idPage' => $this->actualPage->getId()))->getElementPrototype()->addAttributes(array('class' => array('btn', 'btn-danger') , 'data-confirm' => 'Are you sure you want to delete this item?'));
 
         return $grid;
     }
@@ -137,6 +137,58 @@ class ProductsPresenter extends BasePresenter
 
         $this->template->idPage = $idPage;
         $this->template->accessoriescategory = $this->accessoriescategory;
+    }
+
+    public function actionDeleteCategory($id){
+
+        $this->accessoriescategory = $this->accessoriescategoryRepository->find($id);
+        $this->em->remove($this->accessoriescategory);
+        $this->em->flush();
+        
+        $this->flashMessage('Accessories category has been removed.', 'success');
+        
+        if(!$this->isAjax()){
+            $this->redirect('default', array(
+                'idPage' => $this->actualPage->getId()
+            ));
+        }
+    }
+
+    protected function createComponentAccessoriesGrid($name)
+    {
+        $grid = $this->createGrid($this, $name, "\WebCMS\ProductreviewModule\Entity\Accessory");
+
+        $grid->addColumnText('name', 'Name')->setSortable();
+
+        $grid->addColumnText('type', 'Type')->setCustomRender(function($item) {
+            return $item->getType() ? 'Farben' : 'Materialen';
+        })->setSortable();
+
+        $grid->addColumnText('file', 'File')->setCustomRender(function($item) {
+            return '<img style="height:65px;width:65px;" src=".'.$item->getFile().'" alt="" />';
+        });
+
+        $grid->addColumnText('category', 'Category')->setCustomRender(function($item) {
+            return $item->getAccessoriescategory()->getName();
+        })->setSortable();
+
+        $grid->addActionHref("updateAccessory", 'Edit', 'updateAccessory', array('idPage' => $this->actualPage->getId()))->getElementPrototype()->addAttributes(array('class' => array('btn', 'btn-primary', 'ajax')));
+        $grid->addActionHref("deleteAccessory", 'Delete', 'deleteAccessory', array('idPage' => $this->actualPage->getId()))->getElementPrototype()->addAttributes(array('class' => array('btn', 'btn-danger') , 'data-confirm' => 'Are you sure you want to delete this item?'));
+
+        return $grid;
+    }
+
+    public function actionUpdateAccessory($id, $idPage)
+    {
+        $this->accessory = $id ? $this->accessoryRepository->find($id) : "";
+    }
+
+    public function renderUpdateAccessory($idPage)
+    {
+        $this->reloadContent();
+
+        $this->template->idPage = $idPage;
+        $this->template->accessory = $this->accessory;
     }
 
     protected function createComponentProductForm()
@@ -235,7 +287,7 @@ class ProductsPresenter extends BasePresenter
     {
         $values = $form->getValues();
 
-        if (!is_object($this->product)) {
+        if (!is_object($this->accessoriescategory)) {
             $this->accessoriescategory = new Accessoriescategory;
             $this->em->persist($this->accessoriescategory);
         }
@@ -247,6 +299,66 @@ class ProductsPresenter extends BasePresenter
 
         $this->em->flush();
         $this->flashMessage('Accessories category has been added/updated.', 'success');
+        
+        $this->forward('default', array(
+            'idPage' => $this->actualPage->getId()
+        ));
+    }
+
+    protected function createComponentAccessoryForm()
+    {
+        $form = $this->createForm();
+
+        $categories = $this->em->getRepository('\WebCMS\ProductreviewModule\Entity\Accessoriescategory')->findAll();
+        $categoriesForSelect = array();
+        if ($categories) {
+            foreach ($categories as $category) {
+                $categoriesForSelect[$category->getId()] = $category->getName();
+            }
+        }
+
+        $types = array(
+            0 => 'Materialen',
+            1 => 'Farben'
+        );
+
+        $form->addText('name', 'Name');
+        $form->addSelect('type', 'Type')->setItems($types);
+        $form->addSelect('accessoriescategory', 'Category')->setItems($categoriesForSelect);
+
+        $form->addSubmit('submit', 'Save')->setAttribute('class', 'btn btn-success');
+        $form->onSuccess[] = callback($this, 'accessoryFormSubmitted');
+ 
+        if (is_object($this->accessory)) {
+            $form->setDefaults($this->accessory->toArray());
+        }
+        
+        return $form;
+    }
+
+    public function accessoryFormSubmitted($form)
+    {
+        $values = $form->getValues();
+
+        if (!is_object($this->accessory)) {
+            $this->accessory = new Accessory;
+            $this->em->persist($this->accessory);
+        }
+        
+        foreach ($values as $key => $value) {
+            if ($key == "accessoriescategory") {
+                $value = $this->accessoriescategoryRepository->find($value);
+            }
+            $setter = 'set' . ucfirst($key);
+            $this->accessory->$setter($value);
+        }
+
+        if (array_key_exists('files', $_POST)) {
+            $this->accessory->setFile($_POST['files'][0]);
+        }
+
+        $this->em->flush();
+        $this->flashMessage('Accessory has been added/updated.', 'success');
         
         $this->forward('default', array(
             'idPage' => $this->actualPage->getId()

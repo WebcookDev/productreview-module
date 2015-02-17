@@ -21,7 +21,7 @@ class Accessory extends \WebCMS\Entity\Entity
 	private $name;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $file;
 
