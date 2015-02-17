@@ -69,7 +69,7 @@ class Accessory extends \WebCMS\Entity\Entity
     {
         $this->accessoriescategory = $accessoriescategory;
         return $this;
-    
+    }
 
     public function getFile()
     {
