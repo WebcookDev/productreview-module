@@ -31,6 +31,10 @@ class ProductsPresenter extends BasePresenter
 
     private $accessoriescategoryRepository;
 
+    private $farben;
+
+    private $materialen;
+
     protected function startup()
     {
     	parent::startup();
@@ -76,6 +80,13 @@ class ProductsPresenter extends BasePresenter
     public function actionUpdate($id, $idPage)
     {
         $this->product = $id ? $this->repository->find($id) : "";
+        $this->accessoriescategory = $this->accessoriescategoryRepository->findAll();
+        $this->materialen = $this->accessoryRepository->findBy(array(
+            'type' => 0
+        ));
+        $this->farben = $this->accessoryRepository->findBy(array(
+            'type' => 1
+        ));
     }
 
     public function renderUpdate($idPage)
@@ -84,6 +95,9 @@ class ProductsPresenter extends BasePresenter
 
         $this->template->idPage = $idPage;
         $this->template->product = $this->product;
+        $this->template->accessoriescategory = $this->accessoriescategory;
+        $this->template->materialen = $this->materialen;
+        $this->template->farben = $this->farben;
     }
 
     public function actionAddToHomepage($id, $idPage)
@@ -201,6 +215,8 @@ class ProductsPresenter extends BasePresenter
 
         $form->addCheckbox('hide', 'Hide');
 
+        $form->addHidden('accessories');
+
         $form->addSubmit('submit', 'Save')->setAttribute('class', 'btn btn-success');
         $form->onSuccess[] = callback($this, 'productFormSubmitted');
  
@@ -257,6 +273,12 @@ class ProductsPresenter extends BasePresenter
 
                 $counter++;
             }
+        }
+
+        if (array_key_exists('accessoriesPost', $_POST)) {
+            $this->product->setAccessories(implode(',', $_POST['accessoriesPost']));
+        } else {
+            $this->product->setAccessories("");
         }
 
         $this->em->flush();

@@ -10,6 +10,8 @@ namespace FrontendModule\ProductreviewModule;
 use Nette\Application\UI;
 use Kdyby\BootstrapFormRenderer\BootstrapRenderer;
 use WebCMS\ProductreviewModule\Entity\Product;
+use WebCMS\ProductreviewModule\Entity\Accessoriescategory;
+use WebCMS\ProductreviewModule\Entity\Accessory;
 
 /**
  * Description of ToursPresenter
@@ -23,12 +25,22 @@ class ProductsPresenter extends BasePresenter
     private $product;
 
     private $products;
+
+    private $accessories = array();
+
+    private $accessoriescategory;
+
+    private $accessoryRepository;
+
+    private $accessoriescategoryRepository;
     
     protected function startup() 
     {
         parent::startup();
 
         $this->repository = $this->em->getRepository('WebCMS\ProductreviewModule\Entity\Product');
+        $this->accessoriescategoryRepository = $this->em->getRepository('WebCMS\ProductreviewModule\Entity\Accessoriescategory');
+        $this->accessoryRepository = $this->em->getRepository('WebCMS\ProductreviewModule\Entity\Accessory');
     }
 
     protected function beforeRender()
@@ -39,6 +51,7 @@ class ProductsPresenter extends BasePresenter
     public function actionDefault($id)
     {
         $this->products = $this->repository->findAll();
+        $this->accessoriescategory = $this->accessoriescategoryRepository->findAll();
 
         $parameters = $this->getParameter();
 
@@ -47,12 +60,20 @@ class ProductsPresenter extends BasePresenter
             $this->product = $this->repository->findOneBy(array(
                 'slug' => $slug
             ));
+
+            $accessories = $this->product->getAccessories();
+
+            foreach (explode(",", $accessories) as $accessory) {
+                $this->accessories[] = $this->accessoryRepository->find($accessory);
+            }
         }
     }
 
     public function renderDefault($id)
     {   
         if ($this->product) {
+            $this->template->accessoriescategory = $this->accessoriescategory;
+            $this->template->accessories = $this->accessories;
             $this->template->product = $this->product;
             $this->template->setFile(APP_DIR . '/templates/productreview-module/Products/detail.latte');
         }

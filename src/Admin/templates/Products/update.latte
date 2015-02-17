@@ -25,6 +25,43 @@
 		</div>
 
 		<div class="control-group">
+			<h3>{_'Materialen'}</h3>
+			{foreach $accessoriescategory as $category}
+				<h4>{$category->getName()}</h4>
+				{foreach $materialen as $m}
+					{if $m->getAccessoriescategory()->getName() == $category->getName() && $m->getType() == 0}					
+						<div class="col-md-1 jq_fileBox">
+							<div class="img-thumbnail">
+								<img src="{$basePath}{$m->getFile()|thumbnail:'small_'}" />
+								<input type="checkbox" name="accessoriesPost[]" value="{$m->getId()}" />
+							</div>
+						</div>
+					{/if}
+				{/foreach}
+				<div class="clear"></div>
+			{/foreach}
+
+		</div>
+
+		<div class="control-group">
+			<h3>{_'Farben'}</h3>
+			{foreach $accessoriescategory as $category}
+				<h4>{$category->getName()}</h4>
+				{foreach $farben as $m}
+					{if $m->getAccessoriescategory()->getName() == $category->getName() && $m->getType() == 1}					
+						<div class="col-md-1 jq_fileBox">
+							<div class="img-thumbnail">
+								<img src="{$basePath}{$m->getFile()|thumbnail:'small_'}" />
+								<input type="checkbox" name="accessoriesPost[]" value="{$m->getId()}" />
+							</div>
+						</div>
+					{/if}
+				{/foreach}
+				<div class="clear"></div>
+			{/foreach}
+		</div>
+
+		<div class="control-group">
 			<a n:href=":Admin:Filesystem:default dialog => true, multiple => true" data-container="#pictures" class="btn btn-primary ajax filesDialog" data-remote="false" data-target="#myModal" data-toggle="modal">{_'Load files'}</a>
 		</div>
 
@@ -51,6 +88,18 @@
 		</div>
 
 	{/form}
+
+	<script>
+		$(function() {
+			var accessories = $('#frmproductForm-accessories').val();
+			console.log(accessories);
+			accessories = accessories.split(',');
+
+			$.each(accessories, function(index, val) {
+				$("input[name='accessoriesPost\[\]'][value='"+val+"']").prop('checked', true);
+			});
+		});
+	</script>
 
 
 {/block}
