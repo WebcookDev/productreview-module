@@ -60,6 +60,12 @@ class Product extends \WebCMS\Entity\Entity
     private $reviews;
 
     /**
+     * @orm\OneToMany(targetEntity="Download", mappedBy="product") 
+     * @var Array
+     */
+    private $downloads;
+
+    /**
      * @orm\Column(type="text")
      */
     private $accessories;
@@ -197,6 +203,17 @@ class Product extends \WebCMS\Entity\Entity
     public function setAccessories($accessories)
     {
         $this->accessories = $accessories;
+        return $this;
+    }
+
+    public function getDownloads()
+    {
+        return $this->downloads;
+    }
+    
+    public function setDownloads($downloads)
+    {
+        $this->downloads = $downloads;
         return $this;
     }
 }
