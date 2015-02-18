@@ -1,0 +1,20 @@
+{block content}
+	
+	<div class="page-heading">	
+		{include ../tabs.latte active => 'downloads'}
+	</div>
+
+
+	<div class="row control-group">
+		<h2>{_'Categories'}</h2>
+		<a class="btn btn-primary" n:href="updateCategory idPage => $idPage">{_'Add category'}</a>
+		{control categoriesGrid}
+	</div>
+
+	<div class="row control-group">
+		<h2>{_'Downloads'}</h2>
+		<a class="btn btn-primary" n:href="update idPage => $idPage">{_'Add download'}</a>
+		{* {control grid} *}
+	</div>
+
+{/block}
