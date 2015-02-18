@@ -5,7 +5,7 @@
  * Copyright (c) @see LICENSE
  */
 
-namespace WebCMS\ToursModule\Entity;
+namespace WebCMS\ProductreviewModule\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as gedmo;
