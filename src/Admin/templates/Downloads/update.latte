@@ -1,0 +1,60 @@
+{block content}
+	
+	<div class="page-heading">	
+		<h1>{$actualPage->getTitle()}</h1>
+		{include ../tabs.latte active => 'downloads'}
+	</div>
+
+	{form form}
+		
+		<div class="control-group">
+			{label name class => 'control-label' /}
+			{input name class => 'form-control'}
+		</div>
+		<div class="control-group">
+			{label category class => 'control-label' /}
+			{input category class => 'form-control'}
+		</div>
+		<div class="control-group">
+			{label product class => 'control-label' /}
+			{input product class => 'form-control'}
+		</div>
+		<div class="control-group">
+			{label type class => 'control-label' /}
+			{input type class => 'form-control'}
+		</div>
+		<div class="control-group">
+			{label hide class => 'control-label' /}
+			{input hide class => ''}
+		</div>
+
+		<div class="control-group">
+			<a n:href=":Admin:Filesystem:default dialog => true, multiple => true" data-container="#pictures" class="btn btn-primary ajax filesDialog" data-remote="false" data-target="#myModal" data-toggle="modal">{_'Load files'}</a>
+		</div>
+
+		<br /><br />
+		
+		<div class="well row" id="pictures">
+			{if !empty($download)}
+				{foreach $download->getFiles() as $photo}
+					<div class="col-md-3 jq_fileBox">
+						<div class="img-thumbnail">							
+							<img src="{$basePath}{$photo->getPath()|thumbnail:'system'}" />
+							<input type="hidden" name="files[]" value="{$photo->getPath()}" />
+							<input class="form-control" type="text" name="fileNames[]" value="{$photo->getName()}" />
+							<input class="form-control" type="radio" name="fileDefault[]" value="{$iterator->counter}" {if $photo->getMain()}checked{/if} />
+							<span class="btn btn-default jq_fileDelete">&times</span>
+						</div>
+					</div>
+				{/foreach}
+			{/if}
+		</div>
+
+		<div class="form-actions">
+			{input submit class => 'btn btn-success'}
+		</div>
+
+	{/form}
+
+
+{/block}

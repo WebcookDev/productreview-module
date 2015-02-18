@@ -28,7 +28,7 @@ class Downloadcategory extends \WebCMS\Entity\Entity
     private $slug;
 
     /**
-     * @ORM\OneToMany(targetEntity="Download", mappedBy="downloadcategory") 
+     * @ORM\OneToMany(targetEntity="Download", mappedBy="category") 
      * @var Array
      */
     private $downloads;

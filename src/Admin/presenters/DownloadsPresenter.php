@@ -54,16 +54,28 @@ class DownloadsPresenter extends BasePresenter
 
     protected function createComponentGrid($name)
     {
-        $grid = $this->createGrid($this, $name, "\WebCMS\ProductreviewModule\Entity\Product");
+        $grid = $this->createGrid($this, $name, "\WebCMS\ProductreviewModule\Entity\Download");
 
         $grid->addColumnText('name', 'Name')->setSortable();
 
-        $grid->addColumnText('homepage', 'Added To homepage')->setCustomRender(function($item) {
-            return $item->getHomepage() ? 'yes' : 'no';
+        $grid->addColumnText('category', 'Category')->setCustomRender(function($item) {
+            return $item->getCategory()->getName();
+        })->setSortable();
+
+        $grid->addColumnText('product', 'Product')->setCustomRender(function($item) {
+            return $item->getProduct()->getName();
+        })->setSortable();
+
+        $grid->addColumnText('type', 'Type')->setCustomRender(function($item) {
+            return $item->getType() ? 'Surroundings' : 'Product';
+        })->setSortable();
+
+        $grid->addColumnText('main', 'Added to main page')->setCustomRender(function($item) {
+            return $item->getMain() ? 'yes' : 'no';
         })->setSortable();
 
         $grid->addActionHref("update", 'Edit', 'update', array('idPage' => $this->actualPage->getId()))->getElementPrototype()->addAttributes(array('class' => array('btn', 'btn-primary', 'ajax')));
-        $grid->addActionHref("addToHomepage", 'Add to homepage', 'addToHomepage', array('idPage' => $this->actualPage->getId()))->getElementPrototype()->addAttributes(array('class' => array('btn', 'btn-primary', 'ajax')));
+        $grid->addActionHref("setMain", 'Set main', 'setMain', array('idPage' => $this->actualPage->getId()))->getElementPrototype()->addAttributes(array('class' => array('btn', 'btn-primary', 'ajax')));
         $grid->addActionHref("delete", 'Delete', 'delete', array('idPage' => $this->actualPage->getId()))->getElementPrototype()->addAttributes(array('class' => array('btn', 'btn-danger') , 'data-confirm' => 'Are you sure you want to delete this item?'));
 
         return $grid;
@@ -71,14 +83,7 @@ class DownloadsPresenter extends BasePresenter
 
     public function actionUpdate($id, $idPage)
     {
-        $this->product = $id ? $this->repository->find($id) : "";
-        $this->accessoriescategory = $this->accessoriescategoryRepository->findAll();
-        $this->materialen = $this->accessoryRepository->findBy(array(
-            'type' => 0
-        ));
-        $this->farben = $this->accessoryRepository->findBy(array(
-            'type' => 1
-        ));
+        $this->download = $id ? $this->repository->find($id) : "";
     }
 
     public function renderUpdate($idPage)
@@ -86,20 +91,17 @@ class DownloadsPresenter extends BasePresenter
         $this->reloadContent();
 
         $this->template->idPage = $idPage;
-        $this->template->product = $this->product;
-        $this->template->accessoriescategory = $this->accessoriescategory;
-        $this->template->materialen = $this->materialen;
-        $this->template->farben = $this->farben;
+        $this->template->download = $this->download;
     }
 
-    public function actionAddToHomepage($id, $idPage)
+    public function actionSetMain($id, $idPage)
     {
-        $this->product = $this->repository->find($id);
-        $this->product->setHomepage($this->product->getHomepage() ? false : true);
+        $this->download = $this->repository->find($id);
+        $this->download->setMain($this->download->getMain() ? false : true);
 
         $this->em->flush();
 
-        $this->flashMessage('Product has been changed', 'success');
+        $this->flashMessage('Download has been changed', 'success');
         $this->forward('default', array(
             'idPage' => $this->actualPage->getId()
         ));
@@ -107,17 +109,120 @@ class DownloadsPresenter extends BasePresenter
 
     public function actionDelete($id){
 
-        $this->product = $this->repository->find($id);
-        $this->em->remove($this->product);
+        $this->download = $this->repository->find($id);
+        $this->em->remove($this->download);
         $this->em->flush();
         
-        $this->flashMessage('Product has been removed.', 'success');
+        $this->flashMessage('Download has been removed.', 'success');
         
         if(!$this->isAjax()){
             $this->redirect('default', array(
                 'idPage' => $this->actualPage->getId()
             ));
         }
+    }
+
+    protected function createComponentForm()
+    {
+        $form = $this->createForm();
+
+        $categories = $this->em->getRepository('\WebCMS\ProductreviewModule\Entity\Downloadcategory')->findAll();
+        $categoriesForSelect = array();
+        if ($categories) {
+            foreach ($categories as $category) {
+                $categoriesForSelect[$category->getId()] = $category->getName();
+            }
+        }
+
+        $products = $this->em->getRepository('\WebCMS\ProductreviewModule\Entity\Product')->findAll();
+        $productsForSelect = array();
+        if ($products) {
+            foreach ($products as $product) {
+                $productsForSelect[$product->getId()] = $product->getName();
+            }
+        }
+
+        $types = array(
+            0 => 'Product',
+            1 => 'Surroundings'
+        );
+        
+
+        $form->addText('name', 'Name')->setRequired();
+        $form->addSelect('category', 'Category')->setItems($categoriesForSelect);
+        $form->addSelect('product', 'Product')->setItems($productsForSelect);
+        $form->addSelect('type', 'Type')->setItems($types);
+                
+        $form->addCheckbox('hide', 'Hide');
+
+        $form->addSubmit('submit', 'Save')->setAttribute('class', 'btn btn-success');
+        $form->onSuccess[] = callback($this, 'tourFormSubmitted');
+ 
+        if (is_object($this->download)) {
+            $form->setDefaults($this->download->toArray());
+        }
+        
+        return $form;
+    }
+    
+    public function tourFormSubmitted($form)
+    {
+        $values = $form->getValues();
+
+        if(!is_object($this->download)){
+            $this->download = new Download;
+            $this->em->persist($this->download);
+        }else{
+            // delete old photos and save new ones
+            $qb = $this->em->createQueryBuilder();
+            $qb->delete('WebCMS\ProductreviewModule\Entity\Downloadfile', 'l')
+                    ->where('l.download = ?1')
+                    ->setParameter(1, $this->download)
+                    ->getQuery()
+                    ->execute();
+        }
+
+        $category = $this->em->getRepository('\WebCMS\ProductreviewModule\Entity\Downloadcategory')->find($values->category);
+        $product = $this->em->getRepository('\WebCMS\ProductreviewModule\Entity\Product')->find($values->product);
+        
+        $this->download->setName($values->name);
+        $this->download->setCategory($category);
+        $this->download->setProduct($product);
+        $this->download->setType($values->type);
+        $this->download->setHide($values->hide);
+            
+        if(array_key_exists('files', $_POST)){
+            $counter = 0;
+            if(array_key_exists('fileDefault', $_POST)) $default = intval($_POST['fileDefault'][0]) - 1;
+            else $default = -1;
+            
+            foreach($_POST['files'] as $path){
+
+                $photo = new \WebCMS\ProductreviewModule\Entity\Downloadfile;
+                $photo->setName($_POST['fileNames'][$counter]);
+                
+                if($default === $counter){
+                    $photo->setMain(TRUE);
+                }else{
+                    $photo->setMain(FALSE);
+                }
+                
+                $photo->setPath($path);
+                $photo->setDownload($this->download);
+                $photo->setCreated(new \DateTime);
+
+                $this->em->persist($photo);
+
+                $counter++;
+            }
+        }
+
+        $this->em->flush();
+        $this->flashMessage('Download has been added/updated.', 'success');
+        
+        $this->forward('default', array(
+            'idPage' => $this->actualPage->getId()
+        ));
     }
 
     protected function createComponentCategoriesGrid($name)
