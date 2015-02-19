@@ -28,7 +28,7 @@ class Product extends \WebCMS\Entity\Entity
     private $slug;
 
     /**
-     * @orm\ManyToOne(targetEntity="Page")
+     * @orm\ManyToOne(targetEntity="WebCMS\Entity\Page")
      * @orm\JoinColumn(name="page_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $page;
