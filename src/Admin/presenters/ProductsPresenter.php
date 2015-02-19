@@ -62,7 +62,10 @@ class ProductsPresenter extends BasePresenter
 
     protected function createComponentGrid($name)
     {
-        $grid = $this->createGrid($this, $name, "\WebCMS\ProductreviewModule\Entity\Product");
+        $grid = $this->createGrid($this, $name, "\WebCMS\ProductreviewModule\Entity\Product", null, array(
+            'page = '.$this->actualPage->getId()
+        ));
+
 
         $grid->addColumnText('name', 'Name')->setSortable();
 
@@ -130,7 +133,9 @@ class ProductsPresenter extends BasePresenter
 
     protected function createComponentAccessoriesCategoryGrid($name)
     {
-        $grid = $this->createGrid($this, $name, "\WebCMS\ProductreviewModule\Entity\Accessoriescategory");
+        $grid = $this->createGrid($this, $name, "\WebCMS\ProductreviewModule\Entity\Accessoriescategory", null, array(
+            'page = '.$this->actualPage->getId()
+        ));
 
         $grid->addColumnText('name', 'Name')->setSortable();
 

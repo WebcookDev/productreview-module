@@ -50,7 +50,9 @@ class ProductsPresenter extends BasePresenter
 
     public function actionDefault($id)
     {
-        $this->products = $this->repository->findAll();
+        $this->products = $this->repository->findBy(array(
+            'page' => $this->actualPage
+        ));
         $this->accessoriescategory = $this->accessoriescategoryRepository->findAll();
 
         $parameters = $this->getParameter();
