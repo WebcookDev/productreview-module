@@ -183,5 +183,67 @@ class ReviewsPresenter extends BasePresenter
         $this->template->projectForm = $this->createComponentForm('form', $this, $this->actualPage);
     }
 
+    public function reviewsBox($context, $fromPage)
+    {
+        $template = $context->createTemplate();
+        $template->reviews = $context->em->getRepository('WebCMS\ProductreviewModule\Entity\Review')->findBy(array(
+            'hide' => false,
+            'page' => $fromPage,
+            'homepage' => true
+        ));
+
+        $template->reviewPage = $context->em->getRepository('WebCMS\Entity\Page')->findOneBy(array(
+            'moduleName' => 'Productreview',
+            'presenter' => 'Reviews'
+        ));
+
+        $template->link = $context->link(':Frontend:Productreview:Reviews:default', array(
+            'id' => $fromPage->getId(),
+            'path' => $fromPage->getPath(),
+            'abbr' => $context->abbr
+        ));
+
+        $template->abbr = $context->abbr;
+        $template->setFile(APP_DIR . '/templates/productreview-module/Reviews/reviewsBox.latte');
+
+        return $template;  
+    }
+
+    public function mainReviewBox($context, $fromPage)
+    {
+        $template = $context->createTemplate();
+
+        $parameters = $context->getParameter();
+
+        if(count($parameters['parameters']) > 0){
+            
+            $product = $context->em->getRepository('WebCMS\ProductreviewModule\Entity\Product')->findOneBy(array(
+                'slug' => $parameters['parameters'][0]
+            ));
+
+            $template->review = $context->em->getRepository('WebCMS\ProductreviewModule\Entity\Review')->findOneBy(array(
+                'main' => true,
+                'product' => $product
+            ));
+
+        }
+
+        $template->reviewPage = $context->em->getRepository('WebCMS\Entity\Page')->findOneBy(array(
+            'moduleName' => 'Productreview',
+            'presenter' => 'Reviews'
+        ));
+
+        $template->link = $context->link(':Frontend:Productreview:Reviews:default', array(
+            'id' => $fromPage->getId(),
+            'path' => $fromPage->getPath(),
+            'abbr' => $context->abbr
+        ));
+
+        $template->abbr = $context->abbr;
+        $template->setFile(APP_DIR . '/templates/productreview-module/Reviews/mainReviewBox.latte');
+
+        return $template;  
+    }
+
 
 }

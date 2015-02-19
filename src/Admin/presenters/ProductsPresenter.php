@@ -422,24 +422,6 @@ class ProductsPresenter extends BasePresenter
         ));
     }
 
-    public function productsBox($context, $fromPage)
-    {
-        $template = $context->createTemplate();
-        $template->products = $context->repository->findBy(array(
-            'hide' => false,
-            'page' => $fromPage,
-            'homepage' => true
-        ));
-
-        $template->productPage = $context->em->getRepository('WebCMS\Entity\Page')->findOneBy(array(
-            'moduleName' => 'Productreview',
-            'presenter' => 'Products'
-        ));
-
-        $template->abbr = $context->abbr;
-        $template->setFile(APP_DIR . '/templates/productreview-module/Products/productsBox.latte');
-
-        return $template;  
-    }
+    
 
 }

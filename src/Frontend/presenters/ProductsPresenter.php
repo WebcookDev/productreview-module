@@ -86,5 +86,31 @@ class ProductsPresenter extends BasePresenter
         $this->template->products = $this->products;
     }
 
+    public function productsBox($context, $fromPage)
+    {
+        $template = $context->createTemplate();
+        $template->products = $context->em->getRepository('WebCMS\ProductreviewModule\Entity\Product')->findBy(array(
+            'hide' => false,
+            'page' => $fromPage,
+            'homepage' => true
+        ));
+
+        $template->productPage = $context->em->getRepository('WebCMS\Entity\Page')->findOneBy(array(
+            'moduleName' => 'Productreview',
+            'presenter' => 'Products'
+        ));
+
+        $template->link = $context->link(':Frontend:Productreview:Products:default', array(
+            'id' => $fromPage->getId(),
+            'path' => $fromPage->getPath(),
+            'abbr' => $context->abbr
+        ));
+
+        $template->abbr = $context->abbr;
+        $template->setFile(APP_DIR . '/templates/productreview-module/Products/productsBox.latte');
+
+        return $template;  
+    }
+
 
 }
