@@ -139,7 +139,7 @@ class DownloadsPresenter extends BasePresenter
         }
 
         $products = $this->em->getRepository('\WebCMS\ProductreviewModule\Entity\Product')->findBy(array(
-            'page' => $this->actualPage
+            'language' => $this->state->language
         ));
         $productsForSelect = array();
         if ($products) {

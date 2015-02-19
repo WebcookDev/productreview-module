@@ -57,8 +57,13 @@ class DownloadsPresenter extends BasePresenter
 
     public function actionDefault($id)
     {
-        $this->categories = $this->categoryRepository->findAll();
-        $this->products = $this->productRepository->findAll();
+        $this->categories = $this->categoryRepository->findBy(array(
+            'page' => $this->actualPage
+        ));
+
+        $this->products = $this->productRepository->findBy(array(
+            'language' => $this->language
+        ));
 
         foreach ($this->categories as $category) {
             $downloads = $this->repository->findBy(array(
@@ -69,7 +74,8 @@ class DownloadsPresenter extends BasePresenter
         }
 
         $this->mainDownloads = $this->repository->findBy(array(
-            'main' => true
+            'main' => true,
+            'page' => $this->actualPage
         ));
 
         $parameters = $this->getParameter();

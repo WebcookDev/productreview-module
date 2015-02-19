@@ -129,7 +129,9 @@ class ReviewsPresenter extends BasePresenter
         $this->reviews = $this->repository->findBy(array(
             'page' => $this->actualPage
         ));
-        $this->products = $this->productRepository->findAll();
+        $this->products = $this->productRepository->findBy(array(
+            'language' => $this->language
+        ));
 
         foreach ($this->reviews as $review) {
             if ($review->getLatitude() && $review->getLongtitude()) {

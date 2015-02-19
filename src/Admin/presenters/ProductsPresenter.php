@@ -276,6 +276,7 @@ class ProductsPresenter extends BasePresenter
         }
 
         $this->product->setPage($this->actualPage);
+        $this->product->setLanguage($this->state->language);
 
         if (array_key_exists('files', $_POST)) {
             $counter = 0;
