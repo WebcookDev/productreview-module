@@ -53,7 +53,9 @@ class ProductsPresenter extends BasePresenter
         $this->products = $this->repository->findBy(array(
             'page' => $this->actualPage
         ));
-        $this->accessoriescategory = $this->accessoriescategoryRepository->findAll();
+        $this->accessoriescategory = $this->accessoriescategoryRepository->findBy(array(
+            'page' => $this->actualPage
+        ));
 
         $parameters = $this->getParameter();
 

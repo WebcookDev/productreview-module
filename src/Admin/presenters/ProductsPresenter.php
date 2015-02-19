@@ -216,6 +216,21 @@ class ProductsPresenter extends BasePresenter
         $this->template->accessory = $this->accessory;
     }
 
+    public function actionDeleteAccessory($id){
+
+        $this->accessory = $this->accessoryRepository->find($id);
+        $this->em->remove($this->accessory);
+        $this->em->flush();
+        
+        $this->flashMessage('Accessory has been removed.', 'success');
+        
+        if(!$this->isAjax()){
+            $this->redirect('default', array(
+                'idPage' => $this->actualPage->getId()
+            ));
+        }
+    }
+
     protected function createComponentProductForm()
     {
         $form = $this->createForm();

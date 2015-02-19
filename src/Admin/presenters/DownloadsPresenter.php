@@ -54,7 +54,9 @@ class DownloadsPresenter extends BasePresenter
 
     protected function createComponentGrid($name)
     {
-        $grid = $this->createGrid($this, $name, "\WebCMS\ProductreviewModule\Entity\Download");
+        $grid = $this->createGrid($this, $name, "\WebCMS\ProductreviewModule\Entity\Download", null, array(
+            'page = '.$this->actualPage->getId()
+        ));
 
         $grid->addColumnText('name', 'Name')->setSortable();
 
@@ -126,7 +128,9 @@ class DownloadsPresenter extends BasePresenter
     {
         $form = $this->createForm();
 
-        $categories = $this->em->getRepository('\WebCMS\ProductreviewModule\Entity\Downloadcategory')->findAll();
+        $categories = $this->em->getRepository('\WebCMS\ProductreviewModule\Entity\Downloadcategory')->findBy(array(
+            'page' => $this->actualPage
+        ));
         $categoriesForSelect = array();
         if ($categories) {
             foreach ($categories as $category) {
@@ -134,7 +138,9 @@ class DownloadsPresenter extends BasePresenter
             }
         }
 
-        $products = $this->em->getRepository('\WebCMS\ProductreviewModule\Entity\Product')->findAll();
+        $products = $this->em->getRepository('\WebCMS\ProductreviewModule\Entity\Product')->findBy(array(
+            'page' => $this->actualPage
+        ));
         $productsForSelect = array();
         if ($products) {
             foreach ($products as $product) {
@@ -190,6 +196,7 @@ class DownloadsPresenter extends BasePresenter
         $this->download->setProduct($product);
         $this->download->setType($values->type);
         $this->download->setHide($values->hide);
+        $this->download->setPage($this->actualPage);
             
         if(array_key_exists('files', $_POST)){
             $counter = 0;
@@ -227,7 +234,9 @@ class DownloadsPresenter extends BasePresenter
 
     protected function createComponentCategoriesGrid($name)
     {
-        $grid = $this->createGrid($this, $name, "\WebCMS\ProductreviewModule\Entity\Downloadcategory");
+        $grid = $this->createGrid($this, $name, "\WebCMS\ProductreviewModule\Entity\Downloadcategory", null, array(
+            'page = '.$this->actualPage->getId()
+        ));
 
         $grid->addColumnText('name', 'Name')->setSortable();
 
@@ -290,6 +299,8 @@ class DownloadsPresenter extends BasePresenter
             $setter = 'set' . ucfirst($key);
             $this->category->$setter($value);
         }
+
+        $this->category->setPage($this->actualPage);
 
         $this->em->flush();
         $this->flashMessage('Category has been added/updated.', 'success');

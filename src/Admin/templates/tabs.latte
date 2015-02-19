@@ -1,7 +1,7 @@
 <ul class="nav nav-tabs" id="myTab">
-  <li {if $active == "products"}class="active"{/if}><a class="ajax" n:href="Products:default idPage => $idPage">{_'Products'}</a></li>
+  {* <li {if $active == "products"}class="active"{/if}><a class="ajax" n:href="Products:default idPage => $idPage">{_'Products'}</a></li>
   <li {if $active == "reviews"}class="active"{/if}><a class="ajax" n:href="Reviews:default idPage => $idPage">{_'Reviews'}</a></li>
-  <li {if $active == "downloads"}class="active"{/if}><a class="ajax" n:href="Downloads:default idPage => $idPage">{_'Downloads'}</a></li>
+  <li {if $active == "downloads"}class="active"{/if}><a class="ajax" n:href="Downloads:default idPage => $idPage">{_'Downloads'}</a></li> *}
   <li {if $active == "settings"}class="active"{/if}><a class="ajax settingsTab" n:href="Settings:default idPage => $idPage">{_'Settings'}</a></li>
   
   {var t = $basePathModule . "AdminModule/templates/system/boxes.latte"}

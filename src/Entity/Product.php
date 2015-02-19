@@ -34,6 +34,12 @@ class Product extends \WebCMS\Entity\Entity
     private $page;
 
     /**
+     * @orm\ManyToOne(targetEntity="WebCMS\Entity\Language")
+     * @orm\JoinColumn(name="language_id", referencedColumnName="id", onDelete="CASCADE")
+     */
+    private $language;
+
+    /**
      * @orm\Column(type="text")
      */
     private $text;
@@ -231,6 +237,17 @@ class Product extends \WebCMS\Entity\Entity
     public function setPage($page)
     {
         $this->page = $page;
+        return $this;
+    }
+
+    public function getLanguage()
+    {
+        return $this->language;
+    }
+    
+    public function setLanguage($language)
+    {
+        $this->language = $language;
         return $this;
     }
 }
