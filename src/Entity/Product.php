@@ -176,7 +176,7 @@ class Product extends \WebCMS\Entity\Entity
     }
 
     public function getDefaultReview(){
-        foreach($this->reviews() as $review){
+        foreach($this->getReviews() as $review){
             if($review->getMain()){
                 return $review;
             }
