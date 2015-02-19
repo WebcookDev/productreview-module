@@ -56,8 +56,8 @@ class Productreview extends \WebCMS\Module
 
     public function __construct()
     {
-        $this->addBox('Products box', 'Products', 'productsBox');
-        $this->addBox('Reviews box', 'Reviews', 'reviewsBox');
+        $this->addBox('Products box', 'Products', 'productsBox', 'Productreview');
+        $this->addBox('Reviews box', 'Reviews', 'reviewsBox', 'Productreview');
     }
 
     public function search(\Doctrine\ORM\EntityManager $em, $phrase, \WebCMS\Entity\Language $language)
