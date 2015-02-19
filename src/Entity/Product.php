@@ -28,6 +28,12 @@ class Product extends \WebCMS\Entity\Entity
     private $slug;
 
     /**
+     * @orm\ManyToOne(targetEntity="Page")
+     * @orm\JoinColumn(name="page_id", referencedColumnName="id", onDelete="CASCADE")
+     */
+    private $page;
+
+    /**
      * @orm\Column(type="text")
      */
     private $text;
@@ -214,6 +220,17 @@ class Product extends \WebCMS\Entity\Entity
     public function setDownloads($downloads)
     {
         $this->downloads = $downloads;
+        return $this;
+    }
+
+    public function getPage()
+    {
+        return $this->page;
+    }
+    
+    public function setPage($page)
+    {
+        $this->page = $page;
         return $this;
     }
 }

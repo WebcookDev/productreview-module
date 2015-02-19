@@ -249,6 +249,8 @@ class ProductsPresenter extends BasePresenter
             $this->product->$setter($value);
         }
 
+        $this->product->setPage($this->actualPage);
+
         if (array_key_exists('files', $_POST)) {
             $counter = 0;
             if(array_key_exists('fileDefault', $_POST)) $default = intval($_POST['fileDefault'][0]) - 1;
