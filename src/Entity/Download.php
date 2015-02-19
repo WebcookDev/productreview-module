@@ -54,6 +54,12 @@ class Download extends \WebCMS\Entity\Entity
      */
     private $files;
 
+    /**
+     * @orm\ManyToOne(targetEntity="WebCMS\Entity\Page")
+     * @orm\JoinColumn(name="page_id", referencedColumnName="id", onDelete="CASCADE")
+     */
+    private $page;
+
 
     public function __construct()
     {
@@ -159,6 +165,17 @@ class Download extends \WebCMS\Entity\Entity
     public function setType($type)
     {
         $this->type = $type;
+        return $this;
+    }
+
+    public function getPage()
+    {
+        return $this->page;
+    }
+    
+    public function setPage($page)
+    {
+        $this->page = $page;
         return $this;
     }
 

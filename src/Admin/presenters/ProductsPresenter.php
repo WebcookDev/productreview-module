@@ -83,12 +83,16 @@ class ProductsPresenter extends BasePresenter
     public function actionUpdate($id, $idPage)
     {
         $this->product = $id ? $this->repository->find($id) : "";
-        $this->accessoriescategory = $this->accessoriescategoryRepository->findAll();
+        $this->accessoriescategory = $this->accessoriescategoryRepository->findBy(array(
+            'page' => $this->actualPage
+        ));
         $this->materialen = $this->accessoryRepository->findBy(array(
-            'type' => 0
+            'type' => 0,
+            'page' => $this->actualPage
         ));
         $this->farben = $this->accessoryRepository->findBy(array(
-            'type' => 1
+            'type' => 1,
+            'page' => $this->actualPage
         ));
     }
 
@@ -175,7 +179,9 @@ class ProductsPresenter extends BasePresenter
 
     protected function createComponentAccessoriesGrid($name)
     {
-        $grid = $this->createGrid($this, $name, "\WebCMS\ProductreviewModule\Entity\Accessory");
+        $grid = $this->createGrid($this, $name, "\WebCMS\ProductreviewModule\Entity\Accessory", null, array(
+            'page = '.$this->actualPage->getId()
+        ));
 
         $grid->addColumnText('name', 'Name')->setSortable();
 
@@ -340,7 +346,9 @@ class ProductsPresenter extends BasePresenter
     {
         $form = $this->createForm();
 
-        $categories = $this->em->getRepository('\WebCMS\ProductreviewModule\Entity\Accessoriescategory')->findAll();
+        $categories = $this->em->getRepository('\WebCMS\ProductreviewModule\Entity\Accessoriescategory')->findBy(array(
+            'page' => $this->actualPage
+        ));
         $categoriesForSelect = array();
         if ($categories) {
             foreach ($categories as $category) {
@@ -383,6 +391,8 @@ class ProductsPresenter extends BasePresenter
             $setter = 'set' . ucfirst($key);
             $this->accessory->$setter($value);
         }
+
+        $this->accessory->setPage($this->actualPage);
 
         if (array_key_exists('files', $_POST)) {
             $this->accessory->setFile($_POST['files'][0]);

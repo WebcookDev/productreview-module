@@ -52,7 +52,9 @@ class ReviewsPresenter extends BasePresenter
 
     protected function createComponentGrid($name)
     {
-        $grid = $this->createGrid($this, $name, "\WebCMS\ProductreviewModule\Entity\Review");
+        $grid = $this->createGrid($this, $name, "\WebCMS\ProductreviewModule\Entity\Review", null, array(
+            'page = '.$this->actualPage->getId()
+        ));
 
         $grid->addColumnText('name', 'Name')->setSortable();
 
@@ -126,7 +128,9 @@ class ReviewsPresenter extends BasePresenter
     {
         $form = $this->createForm();
 
-        $products = $this->em->getRepository('\WebCMS\ProductreviewModule\Entity\Product')->findAll();
+        $products = $this->em->getRepository('\WebCMS\ProductreviewModule\Entity\Product')->findBy(array(
+            'page' => $this->actualPage
+        ));
         $productsForSelect = array();
         if ($products) {
             foreach ($products as $product) {
