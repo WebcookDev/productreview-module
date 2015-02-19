@@ -326,6 +326,8 @@ class ProductsPresenter extends BasePresenter
             $this->accessoriescategory->$setter($value);
         }
 
+        $this->accessoriescategory->setPage($this->actualPage);
+
         $this->em->flush();
         $this->flashMessage('Accessories category has been added/updated.', 'success');
         
