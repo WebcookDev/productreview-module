@@ -28,9 +28,17 @@
 			{input text class => 'form-control editor'}
 		</div>
 
+		<br>
 		<div class="control-group">
+			<div class="alert alert-info">
+				{_'Označením se změní typ projektu na navštívitelný. Poté je nutné vyplnit e-mail klienta.'}
+			</div>
+		</div>
+
+		<div class="control-group">
+			
+			{input visitable class => ''}&nbsp;&nbsp;
 			{label visitable class => 'control-label' /}
-			{input visitable class => ''}
 		</div>
 
 		<div class="control-group">
@@ -43,6 +51,12 @@
 			{input clientText class => 'form-control editor'}
 		</div>
 
+		<br>
+		<div class="control-group">
+			<div class="alert alert-info">
+				{_'Vyplňte zeměpisnou šířku a délku pro zobrazení reference na mapě (např. Praha: 50.076198, 14.430605).'}
+			</div>
+		</div>
 		<div class="control-group">
 			{label latitude class => 'control-label' /}
 			{input latitude class => 'form-control'}
@@ -54,12 +68,21 @@
 		</div>
 
 		<div class="control-group">
+			
+			{input hide class => ''}&nbsp;&nbsp;
 			{label hide class => 'control-label' /}
-			{input hide class => ''}
+		</div>
+
+		<br>
+		<div class="control-group">
+			<div class="alert alert-info">
+				{_'Zaškrtnutím tohoto pole nastavíte referenci jako hlavní k vybranému produktu.'}
+			</div>
 		</div>
 		<div class="control-group">
+			
+			{input main class => ''}&nbsp;&nbsp;
 			{label main class => 'control-label' /}
-			{input main class => ''}
 		</div>
 
 		<div class="control-group">

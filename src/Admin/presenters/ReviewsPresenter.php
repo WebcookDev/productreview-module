@@ -151,7 +151,7 @@ class ReviewsPresenter extends BasePresenter
             ->addRule(Form::FILLED, 'Fill in clients email.');
 
         $form->addText('latitude', 'Latitude');
-        $form->addText('longtitude', 'Longitude');
+        $form->addText('longtitude', 'Longtitude');
 
         $form->addCheckbox('hide', 'Hide');
         $form->addCheckbox('main', 'Main');
