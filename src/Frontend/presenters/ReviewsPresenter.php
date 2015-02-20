@@ -135,10 +135,16 @@ class ReviewsPresenter extends BasePresenter
 
         foreach ($this->reviews as $review) {
             if ($review->getLatitude() && $review->getLongtitude()) {
-                if ($review->getVisitable()) {
-                    $this->visitableMarkers[] = array('latitude' => $review->getLatitude(), 'longtitude' => $review->getLongtitude(), 'title' => $review->getName(), 'text' => $review->getText(), 'visitable' => $review->getVisitable());
-                }
-                $this->markers[] = array('latitude' => $review->getLatitude(), 'longtitude' => $review->getLongtitude(), 'title' => $review->getName(), 'text' => $review->getText(), 'visitable' => $review->getVisitable());
+                    if ($review->getDefaultPhoto()) {
+                        $picture = \WebCMS\Helpers\SystemHelper::thumbnail($review->getDefaultPhoto()->getPath(), 'projectFoto_');
+                    } else {
+                        $picture = "";
+                    }
+
+                    if ($review->getVisitable()) {
+                        $this->visitableMarkers[] = array('latitude' => $review->getLatitude(), 'longtitude' => $review->getLongtitude(), 'title' => $review->getName(), 'text' => $review->getText(), 'visitable' => $review->getVisitable(), 'picture' => $picture);
+                    }
+                    $this->markers[] = array('latitude' => $review->getLatitude(), 'longtitude' => $review->getLongtitude(), 'title' => $review->getName(), 'text' => $review->getText(), 'visitable' => $review->getVisitable(), 'picture' => $picture);
             }
         }
 
@@ -158,10 +164,17 @@ class ReviewsPresenter extends BasePresenter
 
             foreach ($this->reviews as $review) {
                 if ($review->getLatitude() && $review->getLongtitude()) {
-                    if ($review->getVisitable()) {
-                        $this->visitableMarkers[] = array('latitude' => $review->getLatitude(), 'longtitude' => $review->getLongtitude(), 'title' => $review->getName(), 'text' => $review->getText(), 'visitable' => $review->getVisitable());
+
+                    if ($review->getDefaultPhoto()) {
+                        $picture = \WebCMS\Helpers\SystemHelper::thumbnail($review->getDefaultPhoto()->getPath(), 'projectFoto_');
+                    } else {
+                        $picture = "";
                     }
-                    $this->markers[] = array('latitude' => $review->getLatitude(), 'longtitude' => $review->getLongtitude(), 'title' => $review->getName(), 'text' => $review->getText(), 'visitable' => $review->getVisitable());
+
+                    if ($review->getVisitable()) {
+                        $this->visitableMarkers[] = array('latitude' => $review->getLatitude(), 'longtitude' => $review->getLongtitude(), 'title' => $review->getName(), 'text' => $review->getText(), 'visitable' => $review->getVisitable(), 'picture' => $picture);
+                    }
+                    $this->markers[] = array('latitude' => $review->getLatitude(), 'longtitude' => $review->getLongtitude(), 'title' => $review->getName(), 'text' => $review->getText(), 'visitable' => $review->getVisitable(), 'picture' => $picture);
                 }
             }
         }
