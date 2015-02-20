@@ -55,8 +55,8 @@
 			{if !empty($download)}
 				{foreach $download->getFiles() as $photo}
 					<div class="col-md-3 jq_fileBox">
-						<div class="img-thumbnail">							
-							<img src="{$basePath}{$photo->getPath()|thumbnail:'system'}" />
+						<div class="img-thumbnail">			
+							<img class="thumbImg" src="{$basePath}{$photo->getPath()|thumbnail:'system'}" />
 							<input type="hidden" name="files[]" value="{$photo->getPath()}" />
 							<input class="form-control" type="text" name="fileNames[]" value="{$photo->getName()}" />
 							<input class="form-control" type="radio" name="fileDefault[]" value="{$iterator->counter}" {if $photo->getMain()}checked{/if} />
@@ -72,6 +72,30 @@
 		</div>
 
 	{/form}
+
+	<script>
+
+		$(function() {
+			var $images = $('.thumbImg');
+
+			$.each($images, function(index, val) {
+				if (!imageExists($(this).attr('src'))) {
+					var notfound = $(this).attr('src').substring( 0, $(this).attr('src').indexOf( "thumbnail" ) );
+					notfound = notfound+'admin-client/webcms2/images/nothing-here-150x150.png';
+
+					$(this).attr('src', notfound);
+				}
+			});
+		});
+
+		function imageExists(url) {
+			var img = new Image();
+		    img.src = url;
+		    return img.height != 0;
+		}
+
+
+	</script>
 
 
 {/block}
