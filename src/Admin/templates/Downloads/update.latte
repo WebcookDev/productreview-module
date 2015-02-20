@@ -29,6 +29,22 @@
 			{label hide class => 'control-label' /}
 		</div>
 
+		<br>
+		<div class="control-group">
+		<div class="alert alert-info">
+			{_'Vyberte soubory pro stažení. Pro zobrazení obrázku ve výběru, označte vybraný obrázek radio buttonem umístěným pod polem pro název souboru.'}
+		</div>
+		</div>
+
+		<br>
+		<div class="control-group">
+		<div class="alert alert-info">
+			{_'Při výběru pouze jednoho souboru se položka zobrazí jako obrázek ke stažení s automaticky vytvořenými náhledy. Při výběrů více souborů se položka zobrazí jako obrázek se soubory ke stažení.'}
+		</div>
+		</div>
+
+		<br>
+
 		<div class="control-group">
 			<a n:href=":Admin:Filesystem:default dialog => true, multiple => true" data-container="#pictures" class="btn btn-primary ajax filesDialog" data-remote="false" data-target="#myModal" data-toggle="modal">{_'Load files'}</a>
 		</div>
