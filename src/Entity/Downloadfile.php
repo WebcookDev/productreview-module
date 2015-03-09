@@ -26,7 +26,7 @@ class Downloadfile extends \WebCMS\Entity\Entity
     private $path;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Download", inversedBy="files") 
+     * @ORM\ManyToOne(targetEntity="Download", inversedBy="files", onDelete="CASCADE") 
      */
     private $download;
 
