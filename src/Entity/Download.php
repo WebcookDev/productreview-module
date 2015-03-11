@@ -37,13 +37,13 @@ class Download extends \WebCMS\Entity\Entity
     private $main;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Downloadcategory", inversedBy="downloads", onDelete="CASCADE") 
+     * @ORM\ManyToOne(targetEntity="Downloadcategory", inversedBy="downloads") 
      * @var Array
      */
     private $category;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Product", inversedBy="downloads", onDelete="CASCADE") 
+     * @ORM\ManyToOne(targetEntity="Product", inversedBy="downloads") 
      * @var Array
      */
     private $product;
