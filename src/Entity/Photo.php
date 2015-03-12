@@ -36,6 +36,16 @@ class Photo extends \WebCMS\Entity\Entity
     private $main;
 
     /**
+     * @ORM\Column(type="boolean")
+     */
+    private $thumbnail;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $inCarousel;
+
+    /**
      * @ORM\Column(type="datetime")
      */
     private $created;
@@ -145,6 +155,28 @@ class Photo extends \WebCMS\Entity\Entity
     {
         $this->created = $created;
 
+        return $this;
+    }
+
+    public function getThumbnail()
+    {
+        return $this->thumbnail;
+    }
+    
+    public function setThumbnail($thumbnail)
+    {
+        $this->thumbnail = $thumbnail;
+        return $this;
+    }
+
+    public function getInCarousel()
+    {
+        return $this->inCarousel;
+    }
+    
+    public function setInCarousel($inCarousel)
+    {
+        $this->inCarousel = $inCarousel;
         return $this;
     }
 }

@@ -24,8 +24,8 @@
 			{input specification class => 'form-control editor'}
 		</div>
 		<div class="control-group">
-			{label order class => 'control-label' /}
-			{input order class => 'form-control'}
+			{label productOrder class => 'control-label' /}
+			{input productOrder class => 'form-control'}
 		</div>
 		<div class="control-group">
 			
@@ -84,8 +84,18 @@
 							<img src="{$basePath}{$photo->getPath()|thumbnail:'system'}" />
 							<input type="hidden" name="files[]" value="{$photo->getPath()}" />
 							<input class="form-control" type="text" name="fileNames[]" value="{$photo->getName()}" />
-							<input class="form-control" type="radio" name="fileDefault[]" value="{$iterator->counter}" {if $photo->getMain()}checked{/if} />
-							<span class="btn btn-default jq_fileDelete">&times</span>
+							<div style="text-align:center;margin-bottom:15px;">
+								<input class="form-control" type="radio" name="fileDefault[]" value="{$iterator->counter}" {if $photo->getMain()}checked{/if} /> {_'main photo'}
+							</div>
+							<div style="text-align:center;margin-bottom:15px;">
+								<input class="form-control" type="radio" name="fileThumbnail[]" value="{$iterator->counter}" {if $photo->getMain()}checked{/if} /> {_'thumbnail'}
+							</div>
+							<div style="text-align:center;margin-bottom:15px;">
+								<input class="form-control" type="checkbox" name="fileCarousel[]" value="{$iterator->counter}" {if $photo->getMain()}checked{/if} /> {_'carousel'}
+							</div>
+							<div style="text-align:center;margin-bottom:15px;">
+								<span class="btn btn-default jq_fileDelete">&times</span>
+							</div>
 						</div>
 					</div>
 				{/foreach}

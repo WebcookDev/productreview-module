@@ -73,7 +73,7 @@ class ProductsPresenter extends BasePresenter
             return $item->getHomepage() ? 'yes' : 'no';
         })->setSortable();
 
-        $grid->addColumnText('order', 'Order')->setSortable();
+        $grid->addColumnText('productOrder', 'Order')->setSortable();
 
         $grid->addActionHref("update", 'Edit', 'update', array('idPage' => $this->actualPage->getId()))->getElementPrototype()->addAttributes(array('class' => array('btn', 'btn-primary', 'ajax')));
         $grid->addActionHref("addToHomepage", 'Add to homepage', 'addToHomepage', array('idPage' => $this->actualPage->getId()))->getElementPrototype()->addAttributes(array('class' => array('btn', 'btn-primary', 'ajax')));
@@ -242,7 +242,7 @@ class ProductsPresenter extends BasePresenter
         $form->addTextArea('text', 'Text')->setAttribute('class', 'form-control editor');
         $form->addTextArea('specification', 'Specification')->setAttribute('class', 'form-control editor');
 
-        $form->addText('order', 'Order');
+        $form->addText('productOrder', 'Order');
 
         $form->addCheckbox('hide', 'Hide');
 
@@ -287,6 +287,9 @@ class ProductsPresenter extends BasePresenter
             $counter = 0;
             if(array_key_exists('fileDefault', $_POST)) $default = intval($_POST['fileDefault'][0]) - 1;
             else $default = -1;
+
+            if(array_key_exists('fileThumbnail', $_POST)) $thumbnail = intval($_POST['fileThumbnail'][0]) - 1;
+            else $thumbnail = -1;
             
             foreach($_POST['files'] as $path){
 
@@ -298,7 +301,14 @@ class ProductsPresenter extends BasePresenter
                 }else{
                     $photo->setMain(FALSE);
                 }
+
+                if($thumbnail === $counter){
+                    $photo->setThumbnail(TRUE);
+                }else{
+                    $photo->setThumbnail(FALSE);
+                }
                 
+                $photo->setInCarousel(true);
                 $photo->setPath($path);
                 $photo->setProduct($this->product);
                 $photo->setCreated(new \DateTime);
