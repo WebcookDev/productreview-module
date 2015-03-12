@@ -174,6 +174,16 @@ class Product extends \WebCMS\Entity\Entity
         return NULL;
     }
 
+    public function getThumbnail(){
+        foreach($this->getPhotos() as $photo){
+            if($photo->getThumbnail()){
+                return $photo;
+            }
+        }
+        
+        return NULL;
+    }
+
     public function getReviews()
     {
         return $this->reviews;

@@ -52,7 +52,7 @@ class ProductsPresenter extends BasePresenter
     {
         $this->products = $this->repository->findBy(array(
             'page' => $this->actualPage
-        ));
+        ), array('productOrder' => 'ASC'));
         $this->accessoriescategory = $this->accessoriescategoryRepository->findBy(array(
             'page' => $this->actualPage
         ));
@@ -79,6 +79,14 @@ class ProductsPresenter extends BasePresenter
             $this->template->accessoriescategory = $this->accessoriescategory;
             $this->template->accessories = $this->accessories;
             $this->template->product = $this->product;
+
+            $countOfCarouselPhotos = $this->em->getRepository('WebCMS\ProductreviewModule\Entity\Photo')->findBy(array(
+                'product' => $this->product,
+                'thumbnail' => 0,
+                'inCarousel' => 1,
+            ));
+
+            $this->template->countOfCarouselPhotos = count($countOfCarouselPhotos);
             $this->template->form = $this->createComponentForm('form', $this, $this->actualPage);
             $this->template->setFile(APP_DIR . '/templates/productreview-module/Products/detail.latte');
         }
@@ -184,7 +192,7 @@ class ProductsPresenter extends BasePresenter
             'hide' => false,
             'page' => $fromPage,
             'homepage' => true
-        ));
+        ), array('productOrder' => 'ASC'));
 
         $template->productPage = $context->em->getRepository('WebCMS\Entity\Page')->findOneBy(array(
             'moduleName' => 'Productreview',

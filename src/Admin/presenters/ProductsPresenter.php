@@ -307,8 +307,14 @@ class ProductsPresenter extends BasePresenter
                 }else{
                     $photo->setThumbnail(FALSE);
                 }
+
+                if (in_array($counter, $_POST['fileCarousel'])) {
+                    $inCarousel = true;
+                } else {
+                    $inCarousel = false;
+                }
                 
-                $photo->setInCarousel(true);
+                $photo->setInCarousel($inCarousel);
                 $photo->setPath($path);
                 $photo->setProduct($this->product);
                 $photo->setCreated(new \DateTime);

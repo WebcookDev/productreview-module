@@ -88,10 +88,10 @@
 								<input class="form-control" type="radio" name="fileDefault[]" value="{$iterator->counter}" {if $photo->getMain()}checked{/if} /> {_'main photo'}
 							</div>
 							<div style="text-align:center;margin-bottom:15px;">
-								<input class="form-control" type="radio" name="fileThumbnail[]" value="{$iterator->counter}" {if $photo->getMain()}checked{/if} /> {_'thumbnail'}
+								<input class="form-control" type="radio" name="fileThumbnail[]" value="{$iterator->counter}" {if $photo->getThumbnail()}checked{/if} /> {_'thumbnail'}
 							</div>
 							<div style="text-align:center;margin-bottom:15px;">
-								<input class="form-control" type="checkbox" name="fileCarousel[]" value="{$iterator->counter}" {if $photo->getMain()}checked{/if} /> {_'carousel'}
+								<input class="form-control" type="checkbox" name="fileCarousel[]" value="{$iterator->counter - 1}" {if $photo->getInCarousel()}checked{/if} /> {_'carousel'}
 							</div>
 							<div style="text-align:center;margin-bottom:15px;">
 								<span class="btn btn-default jq_fileDelete">&times</span>
