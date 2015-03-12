@@ -73,6 +73,8 @@ class ReviewsPresenter extends BasePresenter
         $form->addText('name', 'Name:')->setRequired();
         $form->addText('email', 'E-mail:')->setRequired();
         $form->addTextArea('text', 'Nachricht:')->setRequired();
+        $form->addHidden('productId');
+        $form->addHidden('projectTitle');
 
         $form->addSubmit('submit', 'Anfrage schicken')->setAttribute('class', 'btn btn-success');
         $form->onSuccess[] = callback($this, 'formSubmitted');
@@ -96,18 +98,22 @@ class ReviewsPresenter extends BasePresenter
             if($domain !== 'localhost') $mail->setFrom('no-reply@' . $domain);
             else $mail->setFrom('no-reply@test.cz'); // TODO move to settings
 
-            $mailBody = '<p><strong>Dotazující: </strong>'.$values->name.'</p>';
+            $product = $this->productRepository->find($values->productId);
+
+            $mailBody = '<h2>Poptávaný produkt: '.$product->getName().'</h2>';
+            $mailBody .= '<h3>Projekt: '.$values->projectTitle.'</h3>';
+            $mailBody .= '<p><strong>Dotazující: </strong>'.$values->name.'</p>';
             $mailBody .= '<p><strong>Email: </strong>'.$values->email.'</p>';
             $mailBody .= '<p><strong>Dotaz: </strong>'.$values->text.'</p>';
 
-            $mail->setSubject('Dotaz na projekt');
+            $mail->setSubject('Poptávka produktu '.$product->getName());
             $mail->setHtmlBody($mailBody);
 
             try {
                 $mail->send();  
                 $this->flashMessage('Form has been sent', 'success');
             } catch (\Exception $e) {
-                $this->flashMessage('Cannot send form.', 'danger');                    
+                $this->flashMessage('Cannot send email.', 'danger');                    
             }
            
         } else {
@@ -142,9 +148,9 @@ class ReviewsPresenter extends BasePresenter
                     }
 
                     if ($review->getVisitable()) {
-                        $this->visitableMarkers[] = array('latitude' => $review->getLatitude(), 'longtitude' => $review->getLongtitude(), 'title' => $review->getName(), 'text' => $review->getText(), 'visitable' => $review->getVisitable(), 'picture' => $picture);
+                        $this->visitableMarkers[] = array('productId'=> $review->getProduct()->getId(), 'latitude' => $review->getLatitude(), 'longtitude' => $review->getLongtitude(), 'title' => $review->getName(), 'text' => $review->getText(), 'visitable' => $review->getVisitable(), 'picture' => $picture);
                     }
-                    $this->markers[] = array('latitude' => $review->getLatitude(), 'longtitude' => $review->getLongtitude(), 'title' => $review->getName(), 'text' => $review->getText(), 'visitable' => $review->getVisitable(), 'picture' => $picture);
+                    $this->markers[] = array('productId'=> $review->getProduct()->getId(), 'latitude' => $review->getLatitude(), 'longtitude' => $review->getLongtitude(), 'title' => $review->getName(), 'text' => $review->getText(), 'visitable' => $review->getVisitable(), 'picture' => $picture);
             }
         }
 
@@ -172,9 +178,9 @@ class ReviewsPresenter extends BasePresenter
                     }
 
                     if ($review->getVisitable()) {
-                        $this->visitableMarkers[] = array('latitude' => $review->getLatitude(), 'longtitude' => $review->getLongtitude(), 'title' => $review->getName(), 'text' => $review->getText(), 'visitable' => $review->getVisitable(), 'picture' => $picture);
+                        $this->visitableMarkers[] = array('productId'=> $review->getProduct()->getId(), 'latitude' => $review->getLatitude(), 'longtitude' => $review->getLongtitude(), 'title' => $review->getName(), 'text' => $review->getText(), 'visitable' => $review->getVisitable(), 'picture' => $picture);
                     }
-                    $this->markers[] = array('latitude' => $review->getLatitude(), 'longtitude' => $review->getLongtitude(), 'title' => $review->getName(), 'text' => $review->getText(), 'visitable' => $review->getVisitable(), 'picture' => $picture);
+                    $this->markers[] = array('productId'=> $review->getProduct()->getId(), 'latitude' => $review->getLatitude(), 'longtitude' => $review->getLongtitude(), 'title' => $review->getName(), 'text' => $review->getText(), 'visitable' => $review->getVisitable(), 'picture' => $picture);
                 }
             }
         }
