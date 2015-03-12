@@ -88,7 +88,7 @@ class Product extends \WebCMS\Entity\Entity
     private $accessories;
 
     /**
-     * @ORM\Column(type="boolean")
+     * @orm\Column(type="integer")
      */
     private $order;
 

@@ -73,6 +73,8 @@ class ProductsPresenter extends BasePresenter
             return $item->getHomepage() ? 'yes' : 'no';
         })->setSortable();
 
+        $grid->addColumnText('order', 'Order')->setSortable();
+
         $grid->addActionHref("update", 'Edit', 'update', array('idPage' => $this->actualPage->getId()))->getElementPrototype()->addAttributes(array('class' => array('btn', 'btn-primary', 'ajax')));
         $grid->addActionHref("addToHomepage", 'Add to homepage', 'addToHomepage', array('idPage' => $this->actualPage->getId()))->getElementPrototype()->addAttributes(array('class' => array('btn', 'btn-primary', 'ajax')));
         $grid->addActionHref("delete", 'Delete', 'delete', array('idPage' => $this->actualPage->getId()))->getElementPrototype()->addAttributes(array('class' => array('btn', 'btn-danger') , 'data-confirm' => 'Are you sure you want to delete this item?'));
@@ -273,10 +275,21 @@ class ProductsPresenter extends BasePresenter
                     ->execute();
         }
         
-        foreach ($values as $key => $value) {
-            $setter = 'set' . ucfirst($key);
-            $this->product->$setter($value);
-        }
+        // foreach ($values as $key => $value) {
+        //     if ($key == 'order') {
+        //         $value = (int)$value;
+        //     }
+        //     $setter = 'set' . ucfirst($key);
+        //     $this->product->$setter($value);
+        // }
+
+        $this->product->setName($values->name);
+        $this->product->setShortText($values->shortText);
+        $this->product->setText($values->text);
+
+        $this->product->setOrder($values->order);
+
+        $this->product->setHide($values->hide);
 
         $this->product->setPage($this->actualPage);
         $this->product->setLanguage($this->state->language);
