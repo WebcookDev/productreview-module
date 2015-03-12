@@ -90,7 +90,7 @@ class Product extends \WebCMS\Entity\Entity
     /**
      * @orm\Column(type="integer")
      */
-    private $order;
+    private $productOrder;
 
 
     public function __construct()
@@ -261,14 +261,14 @@ class Product extends \WebCMS\Entity\Entity
         return $this;
     }
 
-    public function getOrder()
+    public function getProductOrder()
     {
-        return $this->order;
+        return $this->productOrder;
     }
     
-    public function setOrder($order)
+    public function setProductOrder($productOrder)
     {
-        $this->order = $order;
+        $this->productOrder = $productOrder;
         return $this;
     }
 
