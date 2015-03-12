@@ -75,6 +75,7 @@ class ReviewsPresenter extends BasePresenter
         $form->addTextArea('text', 'Nachricht:')->setRequired();
         $form->addHidden('productId');
         $form->addHidden('projectTitle');
+        $form->addHidden('reviewId');
 
         $form->addSubmit('submit', 'Anfrage schicken')->setAttribute('class', 'btn btn-success');
         $form->onSuccess[] = callback($this, 'formSubmitted');
@@ -91,7 +92,10 @@ class ReviewsPresenter extends BasePresenter
             $mail = new \Nette\Mail\Message;
             $infoMail = $this->settings->get('Info email', 'basic', 'text')->getValue();
             $mail->addTo($infoMail);
-            $mail->addTo($values->email);
+
+            $review = $this->repository->find($values->reviewId);
+
+            $mail->addTo($review->getClientEmail());
             
             $domain = str_replace('www.', '', $this->getHttpRequest()->url->host);
             
@@ -148,9 +152,9 @@ class ReviewsPresenter extends BasePresenter
                     }
 
                     if ($review->getVisitable()) {
-                        $this->visitableMarkers[] = array('productId'=> $review->getProduct()->getId(), 'latitude' => $review->getLatitude(), 'longtitude' => $review->getLongtitude(), 'title' => $review->getName(), 'text' => $review->getText(), 'visitable' => $review->getVisitable(), 'picture' => $picture);
+                        $this->visitableMarkers[] = array('id' => $review->getId(), 'productId'=> $review->getProduct()->getId(), 'latitude' => $review->getLatitude(), 'longtitude' => $review->getLongtitude(), 'title' => $review->getName(), 'text' => $review->getText(), 'visitable' => $review->getVisitable(), 'picture' => $picture);
                     }
-                    $this->markers[] = array('productId'=> $review->getProduct()->getId(), 'latitude' => $review->getLatitude(), 'longtitude' => $review->getLongtitude(), 'title' => $review->getName(), 'text' => $review->getText(), 'visitable' => $review->getVisitable(), 'picture' => $picture);
+                    $this->markers[] = array('id' => $review->getId(), 'productId'=> $review->getProduct()->getId(), 'latitude' => $review->getLatitude(), 'longtitude' => $review->getLongtitude(), 'title' => $review->getName(), 'text' => $review->getText(), 'visitable' => $review->getVisitable(), 'picture' => $picture);
             }
         }
 
@@ -178,9 +182,9 @@ class ReviewsPresenter extends BasePresenter
                     }
 
                     if ($review->getVisitable()) {
-                        $this->visitableMarkers[] = array('productId'=> $review->getProduct()->getId(), 'latitude' => $review->getLatitude(), 'longtitude' => $review->getLongtitude(), 'title' => $review->getName(), 'text' => $review->getText(), 'visitable' => $review->getVisitable(), 'picture' => $picture);
+                        $this->visitableMarkers[] = array('id' => $review->getId(), 'productId'=> $review->getProduct()->getId(), 'latitude' => $review->getLatitude(), 'longtitude' => $review->getLongtitude(), 'title' => $review->getName(), 'text' => $review->getText(), 'visitable' => $review->getVisitable(), 'picture' => $picture);
                     }
-                    $this->markers[] = array('productId'=> $review->getProduct()->getId(), 'latitude' => $review->getLatitude(), 'longtitude' => $review->getLongtitude(), 'title' => $review->getName(), 'text' => $review->getText(), 'visitable' => $review->getVisitable(), 'picture' => $picture);
+                    $this->markers[] = array('id' => $review->getId(), 'productId'=> $review->getProduct()->getId(), 'latitude' => $review->getLatitude(), 'longtitude' => $review->getLongtitude(), 'title' => $review->getName(), 'text' => $review->getText(), 'visitable' => $review->getVisitable(), 'picture' => $picture);
                 }
             }
         }
