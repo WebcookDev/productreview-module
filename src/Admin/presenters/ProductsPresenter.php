@@ -275,21 +275,10 @@ class ProductsPresenter extends BasePresenter
                     ->execute();
         }
         
-        // foreach ($values as $key => $value) {
-        //     if ($key == 'order') {
-        //         $value = (int)$value;
-        //     }
-        //     $setter = 'set' . ucfirst($key);
-        //     $this->product->$setter($value);
-        // }
-
-        $this->product->setName($values->name);
-        $this->product->setShortText($values->shortText);
-        $this->product->setText($values->text);
-
-        $this->product->setOrder($values->order);
-
-        $this->product->setHide($values->hide);
+        foreach ($values as $key => $value) {
+            $setter = 'set' . ucfirst($key);
+            $this->product->$setter($value);
+        }
 
         $this->product->setPage($this->actualPage);
         $this->product->setLanguage($this->state->language);
