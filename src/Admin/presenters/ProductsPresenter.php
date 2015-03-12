@@ -236,8 +236,11 @@ class ProductsPresenter extends BasePresenter
         $form = $this->createForm();
 
         $form->addText('name', 'Name')->setRequired();
+        $form->addTextArea('shortText', 'Short text')->setAttribute('class', 'form-control editor');
         $form->addTextArea('text', 'Text')->setAttribute('class', 'form-control editor');
         $form->addTextArea('specification', 'Specification')->setAttribute('class', 'form-control editor');
+
+        $form->addText('order', 'Order');
 
         $form->addCheckbox('hide', 'Hide');
 

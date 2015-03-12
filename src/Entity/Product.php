@@ -42,6 +42,11 @@ class Product extends \WebCMS\Entity\Entity
     /**
      * @orm\Column(type="text")
      */
+    private $shortText;
+
+    /**
+     * @orm\Column(type="text")
+     */
     private $text;
 
     /**
@@ -81,6 +86,11 @@ class Product extends \WebCMS\Entity\Entity
      * @orm\Column(type="text")
      */
     private $accessories;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $order;
 
 
     public function __construct()
@@ -248,6 +258,28 @@ class Product extends \WebCMS\Entity\Entity
     public function setLanguage($language)
     {
         $this->language = $language;
+        return $this;
+    }
+
+    public function getOrder()
+    {
+        return $this->order;
+    }
+    
+    public function setOrder($order)
+    {
+        $this->order = $order;
+        return $this;
+    }
+
+    public function getShortText()
+    {
+        return $this->shortText;
+    }
+    
+    public function setShortText($shortText)
+    {
+        $this->shortText = $shortText;
         return $this;
     }
 }
