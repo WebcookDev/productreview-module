@@ -21,6 +21,11 @@ class Accessoriescategory extends \WebCMS\Entity\Entity
 	private $name;
 
     /**
+     * @ORM\Column(type="integer")
+     */
+    private $type;
+
+    /**
      * @ORM\OneToMany(targetEntity="Accessory", mappedBy="accessoriescategory") 
      * @var Array
      */
@@ -76,6 +81,17 @@ class Accessoriescategory extends \WebCMS\Entity\Entity
     public function setPage($page)
     {
         $this->page = $page;
+        return $this;
+    }
+
+    public function getType()
+    {
+        return $this->type;
+    }
+    
+    public function setType($type)
+    {
+        $this->type = $type;
         return $this;
     }
 }

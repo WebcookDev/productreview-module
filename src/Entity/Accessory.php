@@ -26,11 +26,6 @@ class Accessory extends \WebCMS\Entity\Entity
     private $file;
 
     /**
-     * @ORM\Column(type="integer")
-     */
-    private $type;
-
-    /**
      * @ORM\ManyToOne(targetEntity="Accessoriescategory", inversedBy="accessories") 
      */
     private $accessoriescategory;
@@ -85,17 +80,6 @@ class Accessory extends \WebCMS\Entity\Entity
     public function setFile($file)
     {
         $this->file = $file;
-        return $this;
-    }
-
-    public function getType()
-    {
-        return $this->type;
-    }
-    
-    public function setType($type)
-    {
-        $this->type = $type;
         return $this;
     }
 

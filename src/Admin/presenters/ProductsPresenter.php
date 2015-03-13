@@ -145,6 +145,10 @@ class ProductsPresenter extends BasePresenter
 
         $grid->addColumnText('name', 'Name')->setSortable();
 
+        $grid->addColumnText('type', 'Type')->setCustomRender(function($item) {
+            return $item->getType() ? 'Farben' : 'Materialen';
+        })->setSortable();
+
         $grid->addActionHref("updateCategory", 'Edit', 'updateCategory', array('idPage' => $this->actualPage->getId()))->getElementPrototype()->addAttributes(array('class' => array('btn', 'btn-primary', 'ajax')));
         $grid->addActionHref("deleteCategory", 'Delete', 'deleteCategory', array('idPage' => $this->actualPage->getId()))->getElementPrototype()->addAttributes(array('class' => array('btn', 'btn-danger') , 'data-confirm' => 'Are you sure you want to delete this item?'));
 
@@ -186,10 +190,6 @@ class ProductsPresenter extends BasePresenter
         ));
 
         $grid->addColumnText('name', 'Name')->setSortable();
-
-        $grid->addColumnText('type', 'Type')->setCustomRender(function($item) {
-            return $item->getType() ? 'Farben' : 'Materialen';
-        })->setSortable();
 
         $grid->addColumnText('file', 'File')->setCustomRender(function($item) {
             return '<img style="height:65px;width:65px;" src=".'.$item->getFile().'" alt="" />';
@@ -356,6 +356,13 @@ class ProductsPresenter extends BasePresenter
 
         $form->addText('name', 'Name')->setRequired();
 
+        $types = array(
+            0 => 'Materialen',
+            1 => 'Farben'
+        );
+
+        $form->addSelect('type', 'Type')->setItems($types);
+
         $form->addSubmit('submit', 'Save')->setAttribute('class', 'btn btn-success');
         $form->onSuccess[] = callback($this, 'categoryFormSubmitted');
  
@@ -404,13 +411,7 @@ class ProductsPresenter extends BasePresenter
             }
         }
 
-        $types = array(
-            0 => 'Materialen',
-            1 => 'Farben'
-        );
-
         $form->addText('name', 'Name');
-        $form->addSelect('type', 'Type')->setItems($types);
         $form->addSelect('accessoriescategory', 'Category')->setItems($categoriesForSelect);
 
         $form->addSubmit('submit', 'Save')->setAttribute('class', 'btn btn-success');
