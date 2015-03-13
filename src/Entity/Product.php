@@ -14,7 +14,7 @@ use Gedmo\Mapping\Annotation as gedmo;
  * @ORM\Entity()
  * @ORM\Table(name="productreview_product")
  */
-class Product extends \WebCMS\Entity\Entity
+class Product extends \WebCMS\Entity\Seo
 {
 	/**
 	 * @ORM\Column(type="string", length=255)

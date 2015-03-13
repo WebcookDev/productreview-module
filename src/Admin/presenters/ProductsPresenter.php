@@ -238,6 +238,10 @@ class ProductsPresenter extends BasePresenter
         $form = $this->createForm();
 
         $form->addText('name', 'Name')->setRequired();
+        $form->addText('metaTitle', 'SEO title');
+        $form->addText('slug', 'SEO url');
+        $form->addText('metaDescription', 'SEO description');
+        $form->addText('metaKeywords', 'SEO keywords');
         $form->addTextArea('shortText', 'Short text')->setAttribute('class', 'form-control editor');
         $form->addTextArea('text', 'Text')->setAttribute('class', 'form-control editor');
         $form->addTextArea('specification', 'Specification')->setAttribute('class', 'form-control editor');
@@ -276,8 +280,15 @@ class ProductsPresenter extends BasePresenter
         }
         
         foreach ($values as $key => $value) {
-            $setter = 'set' . ucfirst($key);
-            $this->product->$setter($value);
+            if ($key == 'slug'){
+                if (!empty($value)) {
+                    $setter = 'set' . ucfirst($key);
+                    $this->product->$setter($value);
+                }
+            } else {
+                $setter = 'set' . ucfirst($key);
+                $this->product->$setter($value);
+            }
         }
 
         $this->product->setPage($this->actualPage);
