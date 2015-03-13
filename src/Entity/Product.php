@@ -134,6 +134,12 @@ class Product extends \WebCMS\Entity\Seo
         return $this->slug;
     }
 
+    public function setSlug($slug)
+    {
+        $this->slug = $slug;
+        return $this;
+    }
+
     public function getText()
     {
         return $this->text;
@@ -291,5 +297,6 @@ class Product extends \WebCMS\Entity\Seo
     {
         $this->shortText = $shortText;
         return $this;
-    }
+    }    
+    
 }

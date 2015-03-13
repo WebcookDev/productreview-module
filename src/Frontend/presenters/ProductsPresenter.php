@@ -86,6 +86,9 @@ class ProductsPresenter extends BasePresenter
                 'inCarousel' => 1,
             ));
 
+            $this->template->seoTitle = $this->product->getMetaTitle();
+            $this->template->seoDescription = $this->product->getMetaDescription();
+            $this->template->seoKeywords = $this->product->getMetaKeywords();
             $this->template->countOfCarouselPhotos = count($countOfCarouselPhotos);
             $this->template->form = $this->createComponentForm('form', $this, $this->actualPage);
             $this->template->setFile(APP_DIR . '/templates/productreview-module/Products/detail.latte');
