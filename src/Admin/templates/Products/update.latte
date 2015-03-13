@@ -52,18 +52,20 @@
 		<div class="control-group">
 			<h3>{_'Materialen'}</h3>
 			{foreach $accessoriescategory as $category}
-				<h4>{$category->getName()}</h4>
-				{foreach $materialen as $m}
-					{if $m->getAccessoriescategory()->getName() == $category->getName() && $m->getType() == 0}					
-						<div class="col-md-1 jq_fileBox">
-							<div class="img-thumbnail">
-								<img src="{$basePath}{$m->getFile()|thumbnail:'small_'}" />
-								<input type="checkbox" name="accessoriesPost[]" value="{$m->getId()}" />
+				{if $category->getType() == 0}
+					<h4>{$category->getName()}</h4>
+					{foreach $accessories as $a}
+						{if $a->getAccessoriescategory()->getName() == $category->getName()}					
+							<div class="col-md-1 jq_fileBox">
+								<div class="img-thumbnail">
+									<img src="{$basePath}{$a->getFile()|thumbnail:'small_'}" />
+									<input type="checkbox" name="accessoriesPost[]" value="{$a->getId()}" />
+								</div>
 							</div>
-						</div>
-					{/if}
-				{/foreach}
-				<div class="clear"></div>
+						{/if}
+					{/foreach}
+					<div class="clear"></div>
+				{/if}				
 			{/foreach}
 
 		</div>
@@ -71,18 +73,20 @@
 		<div class="control-group">
 			<h3>{_'Farben'}</h3>
 			{foreach $accessoriescategory as $category}
-				<h4>{$category->getName()}</h4>
-				{foreach $farben as $m}
-					{if $m->getAccessoriescategory()->getName() == $category->getName() && $m->getType() == 1}					
-						<div class="col-md-1 jq_fileBox">
-							<div class="img-thumbnail">
-								<img src="{$basePath}{$m->getFile()|thumbnail:'small_'}" />
-								<input type="checkbox" name="accessoriesPost[]" value="{$m->getId()}" />
+				{if $category->getType() == 1}
+					<h4>{$category->getName()}</h4>
+					{foreach $accessories as $a}
+						{if $a->getAccessoriescategory()->getName() == $category->getName()}					
+							<div class="col-md-1 jq_fileBox">
+								<div class="img-thumbnail">
+									<img src="{$basePath}{$a->getFile()|thumbnail:'small_'}" />
+									<input type="checkbox" name="accessoriesPost[]" value="{$a->getId()}" />
+								</div>
 							</div>
-						</div>
-					{/if}
-				{/foreach}
-				<div class="clear"></div>
+						{/if}
+					{/foreach}
+					<div class="clear"></div>
+				{/if}				
 			{/foreach}
 		</div>
 

@@ -31,9 +31,7 @@ class ProductsPresenter extends BasePresenter
 
     private $accessoriescategoryRepository;
 
-    private $farben;
-
-    private $materialen;
+    private $accessories;
 
     protected function startup()
     {
@@ -88,12 +86,7 @@ class ProductsPresenter extends BasePresenter
         $this->accessoriescategory = $this->accessoriescategoryRepository->findBy(array(
             'page' => $this->actualPage
         ));
-        $this->materialen = $this->accessoryRepository->findBy(array(
-            'type' => 0,
-            'page' => $this->actualPage
-        ));
-        $this->farben = $this->accessoryRepository->findBy(array(
-            'type' => 1,
+        $this->accessories = $this->accessoryRepository->findBy(array(
             'page' => $this->actualPage
         ));
     }
@@ -105,8 +98,7 @@ class ProductsPresenter extends BasePresenter
         $this->template->idPage = $idPage;
         $this->template->product = $this->product;
         $this->template->accessoriescategory = $this->accessoriescategory;
-        $this->template->materialen = $this->materialen;
-        $this->template->farben = $this->farben;
+        $this->template->accessories = $this->accessories;
     }
 
     public function actionAddToHomepage($id, $idPage)
