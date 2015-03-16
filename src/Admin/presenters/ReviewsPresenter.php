@@ -141,7 +141,7 @@ class ReviewsPresenter extends BasePresenter
         $form->addText('name', 'Name')->setRequired();
         $form->addSelect('product', 'Product')->setItems($productsForSelect)->setRequired();
         $form->addText('date', 'Date')->setAttribute('class', array('datepicker'))->setRequired('Fill in date of this review.');
-        $form->addText('price', 'Price')->setRequired();
+        $form->addText('price', 'Price');
         $form->addTextArea('text', 'Text')->setAttribute('class', 'form-control editor');
 
         $form->addCheckbox('visitable', 'Visitable');
