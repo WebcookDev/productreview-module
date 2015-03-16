@@ -311,8 +311,12 @@ class ProductsPresenter extends BasePresenter
                     $photo->setThumbnail(FALSE);
                 }
 
-                if (in_array($counter, $_POST['fileCarousel'])) {
-                    $inCarousel = true;
+                if (isset($_POST['fileCarousel'])) {
+                    if (in_array($counter, $_POST['fileCarousel'])) {
+                        $inCarousel = true;
+                    } else {
+                        $inCarousel = false;
+                    }
                 } else {
                     $inCarousel = false;
                 }

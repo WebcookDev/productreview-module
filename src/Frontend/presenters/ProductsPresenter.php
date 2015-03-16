@@ -82,8 +82,7 @@ class ProductsPresenter extends BasePresenter
 
             $countOfCarouselPhotos = $this->em->getRepository('WebCMS\ProductreviewModule\Entity\Photo')->findBy(array(
                 'product' => $this->product,
-                'thumbnail' => 0,
-                'inCarousel' => 1,
+                'inCarousel' => 1
             ));
 
             $this->template->seoTitle = $this->product->getMetaTitle();
