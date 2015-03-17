@@ -43,7 +43,7 @@ class Review extends \WebCMS\Entity\Entity
     private $clientEmail;
 
     /**
-     * @orm\Column(type="date")
+     * @orm\Column(type="date", nullable=true)
      */
     private $date;
 

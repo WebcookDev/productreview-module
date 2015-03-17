@@ -140,7 +140,7 @@ class ReviewsPresenter extends BasePresenter
 
         $form->addText('name', 'Name')->setRequired();
         $form->addSelect('product', 'Product')->setItems($productsForSelect)->setRequired();
-        $form->addText('date', 'Date')->setAttribute('class', array('datepicker'))->setRequired('Fill in date of this review.');
+        $form->addText('date', 'Date')->setAttribute('class', array('datepicker'));
         $form->addText('price', 'Price');
         $form->addTextArea('text', 'Text')->setAttribute('class', 'form-control editor');
 
@@ -185,7 +185,11 @@ class ReviewsPresenter extends BasePresenter
         
         foreach ($values as $key => $value) {
             if ($key == "date") {
-                $value = new \Nette\DateTime($value);
+                if (!empty($value)) {
+                    $value = new \Nette\DateTime($value);
+                } else {
+                    $value = null;
+                }
             }
             if ($key == "product") {
                 $key = "product";
