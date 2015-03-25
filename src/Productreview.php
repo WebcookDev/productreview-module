@@ -27,6 +27,7 @@ class Productreview extends \WebCMS\Module
     protected $author = 'Jakub Sanda';
     
     protected $searchable = true;
+    protected $cloneable = true;
 
     /**
      * [$presenters description]
