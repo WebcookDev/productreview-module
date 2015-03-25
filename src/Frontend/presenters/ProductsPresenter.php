@@ -65,8 +65,11 @@ class ProductsPresenter extends BasePresenter
                 'slug' => $slug
             ));
 
-            $accessories = $this->product->getAccessories();
+            if (!is_object($this->product))
+                throw new $this->BadRequestException();
 
+            $accessories = $this->product->getAccessories();
+            
             foreach (explode(",", $accessories) as $accessory) {
                 $this->accessories[] = $this->accessoryRepository->find($accessory);
             }
