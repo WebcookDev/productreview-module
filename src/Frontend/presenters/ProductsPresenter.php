@@ -198,7 +198,8 @@ class ProductsPresenter extends BasePresenter
 
         $template->productPage = $context->em->getRepository('WebCMS\Entity\Page')->findOneBy(array(
             'moduleName' => 'Productreview',
-            'presenter' => 'Products'
+            'presenter' => 'Products',
+            'language' => $fromPage->getLanguage()
         ));
 
         $template->link = $context->link(':Frontend:Productreview:Products:default', array(

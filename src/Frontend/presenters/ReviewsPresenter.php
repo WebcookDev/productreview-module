@@ -217,7 +217,8 @@ class ReviewsPresenter extends BasePresenter
 
         $template->reviewPage = $context->em->getRepository('WebCMS\Entity\Page')->findOneBy(array(
             'moduleName' => 'Productreview',
-            'presenter' => 'Reviews'
+            'presenter' => 'Reviews',
+            'language' => $fromPage->getLanguage()
         ));
 
         $template->link = $context->link(':Frontend:Productreview:Reviews:default', array(
@@ -253,7 +254,8 @@ class ReviewsPresenter extends BasePresenter
 
         $template->reviewPage = $context->em->getRepository('WebCMS\Entity\Page')->findOneBy(array(
             'moduleName' => 'Productreview',
-            'presenter' => 'Reviews'
+            'presenter' => 'Reviews',
+            'language' => $fromPage->getLanguage()
         ));
 
         $template->link = $context->link(':Frontend:Productreview:Reviews:default', array(
