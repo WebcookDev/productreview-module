@@ -65,6 +65,10 @@ class ProductsPresenter extends BasePresenter
                 'slug' => $slug
             ));
 
+            if (!is_object($this->product)) {
+                throw new \Nette\Application\BadRequestException();
+            }
+
             $accessories = $this->product->getAccessories();
 
             foreach (explode(",", $accessories) as $accessory) {
