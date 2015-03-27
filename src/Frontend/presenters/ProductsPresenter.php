@@ -52,7 +52,7 @@ class ProductsPresenter extends BasePresenter
     {
         $this->products = $this->repository->findBy(array(
             'page' => $this->actualPage
-        ));
+        ), array('productOrder' => 'ASC'));
         $this->accessoriescategory = $this->accessoriescategoryRepository->findBy(array(
             'page' => $this->actualPage
         ));
@@ -64,6 +64,10 @@ class ProductsPresenter extends BasePresenter
             $this->product = $this->repository->findOneBy(array(
                 'slug' => $slug
             ));
+            
+            if (!is_object($this->product)) {
+                throw new \Nette\Application\BadRequestException();
+            }
 
             $accessories = $this->product->getAccessories();
 
@@ -94,7 +98,7 @@ class ProductsPresenter extends BasePresenter
             $this->template->accessoriescategory = $this->accessoriescategory;
             $this->template->accessories = $this->accessories;
         }
-        
+
         $this->template->id = $id;
         $this->template->products = $this->products;
     }
