@@ -69,7 +69,8 @@ class Review extends \WebCMS\Entity\Entity
     private $photos;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Product", inversedBy="reviews") 
+     * @orm\ManyToOne(targetEntity="Product", inversedBy="reviews") 
+     * @orm\JoinColumn(name="product_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $product;
 

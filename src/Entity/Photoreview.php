@@ -27,6 +27,7 @@ class Photoreview extends \WebCMS\Entity\Entity
 
     /**
      * @ORM\ManyToOne(targetEntity="Review", inversedBy="photos") 
+     * @ORM\JoinColumn(name="review_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $review;
 

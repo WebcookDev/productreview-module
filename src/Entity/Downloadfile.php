@@ -27,6 +27,7 @@ class Downloadfile extends \WebCMS\Entity\Entity
 
     /**
      * @ORM\ManyToOne(targetEntity="Download", inversedBy="files") 
+     * @ORM\JoinColumn(name="download_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $download;
 
