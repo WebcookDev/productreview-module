@@ -142,7 +142,7 @@ class ProductsPresenter extends BasePresenter
         })->setSortable();
 
         $grid->addActionHref("updateCategory", 'Edit', 'updateCategory', array('idPage' => $this->actualPage->getId()))->getElementPrototype()->addAttributes(array('class' => array('btn', 'btn-primary', 'ajax')));
-        $grid->addActionHref("deleteCategory", 'Delete', 'deleteCategory', array('idPage' => $this->actualPage->getId()))->getElementPrototype()->addAttributes(array('class' => array('btn', 'btn-danger') , 'data-confirm' => 'Are you sure you want to delete this item?'));
+        $grid->addActionHref("deleteCategory", 'Delete', 'deleteCategory', array('idPage' => $this->actualPage->getId()))->getElementPrototype()->addAttributes(array('class' => array('btn', 'btn-danger') , 'data-confirm' => 'Are you sure you want to delete this category and all its items?'));
 
         return $grid;
     }
@@ -163,6 +163,15 @@ class ProductsPresenter extends BasePresenter
     public function actionDeleteCategory($id){
 
         $this->accessoriescategory = $this->accessoriescategoryRepository->find($id);
+
+        $this->accessories = $this->accessoryRepository->findBy(array(
+            'accessoriescategory' => $this->accessoriescategory
+        ));
+
+        foreach ($this->accessories as $accessory) {
+            $this->em->remove($accessory);
+        }
+
         $this->em->remove($this->accessoriescategory);
         $this->em->flush();
         
