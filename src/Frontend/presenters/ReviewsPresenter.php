@@ -136,9 +136,10 @@ class ReviewsPresenter extends BasePresenter
 
     public function actionDefault($id)
     {
-        $this->reviews = $this->repository->findBy(array(
-            'page' => $this->actualPage
-        ));
+        $this->reviews = $this->repository->findBy(
+            array('page' => $this->actualPage),
+            array('id' => 'DESC')
+        );
         $this->products = $this->productRepository->findBy(array(
             'language' => $this->language
         ));
