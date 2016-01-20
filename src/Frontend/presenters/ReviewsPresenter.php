@@ -136,9 +136,16 @@ class ReviewsPresenter extends BasePresenter
 
     public function actionDefault($id)
     {
+        $orderByDate = $this->settings->get('Order reviews by date instead of ID?', 'productreviewModule' . $this->actualPage->getId(), 'checkbox')->getValue();
+        if ($orderByDate == TRUE) {
+            $orderBy = array('date' => 'DESC');
+        } else {
+            $orderBy = array('id' => 'DESC');
+        }
+
         $this->reviews = $this->repository->findBy(
             array('page' => $this->actualPage),
-            array('id' => 'DESC')
+            $orderBy
         );
         $this->products = $this->productRepository->findBy(array(
             'language' => $this->language

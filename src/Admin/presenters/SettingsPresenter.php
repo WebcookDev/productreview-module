@@ -31,6 +31,7 @@ class SettingsPresenter extends BasePresenter
     {
 		$settings = array();
         $settings[] = $this->settings->get('Show google map?', 'productreviewModule' . $this->actualPage->getId(), 'checkbox', array());
+        $settings[] = $this->settings->get('Order reviews by date instead of ID?', 'productreviewModule' . $this->actualPage->getId(), 'checkbox', array());
 
 		return $this->createSettingsForm($settings);
     }
